@@ -1,0 +1,11 @@
+.ui.large.purple.inverted.menu(ng-controller='NavbarCtrl')
+  .header.item
+    i.spy.icon
+    | Draft Planner
+  .right.menu
+    .item(ng-show='!user.id')
+      a.ui.button(href='#/sign_in') Sign in
+    .item(ng-show='!user.id')
+      a.ui.teal.button(href='#/sign_up') Sign up
+    .item(ng-show='user.id')
+      a.ui.teal.button(ng-href='signOut()') Sign out

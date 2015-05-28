@@ -1,5 +1,5 @@
 angular.module "draftPlanner"
-  .controller "MainCtrl", ($scope) ->
+  .controller "MainCtrl", ['$scope', ($scope) ->
     $scope.awesomeThings = [
       {
         'title': 'AngularJS',
@@ -59,3 +59,4 @@ angular.module "draftPlanner"
     ]
     angular.forEach $scope.awesomeThings, (awesomeThing) ->
       awesomeThing.rank = Math.random()
+  ]
