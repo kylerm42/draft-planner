@@ -24,7 +24,7 @@ user = User.create(email: 'test@example.com', password: 'test123', provider: 'em
 User.create(email: 'test2@example.com', password: 'test123', provider: 'email')
 User.create(email: 'test3@example.com', password: 'test123', provider: 'email')
 
-collection = user.collections.create(name: 'Test collection')
+collection = user.collections.create(name: 'Test collection', default: true)
 
 {'QB' => 40, 'RB' => 100, 'WR' => 100, 'TE' => 40, 'DEF' => 32, 'K' => 32}.each do |position, count|
   ranks = Player.where(position: position).order(points: :desc).limit(count).map(&:id)

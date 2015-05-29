@@ -1,5 +1,5 @@
-angular.module 'draftPlanner', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 'ngResource', 'ui.router', 'ng-token-auth']
-  .config ($stateProvider, $urlRouterProvider) ->
+app = angular.module 'draftPlanner', ['ng', 'ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 'ngResource', 'ui.router', 'ng-token-auth']
+  .config ($stateProvider, $urlRouterProvider, $rootScopeProvider) ->
     $stateProvider
       .state 'home',
         url: '/',
@@ -15,4 +15,3 @@ angular.module 'draftPlanner', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize
         controller: 'SessionsCtrl'
 
     $urlRouterProvider.otherwise '/'
-
