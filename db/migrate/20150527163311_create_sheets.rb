@@ -3,7 +3,7 @@ class CreateSheets < ActiveRecord::Migration
     create_table :sheets do |t|
       t.string      :position,    null: false
       t.references  :collection,  index: true, foreign_key: true
-      t.text        :ranks,       null: false, array: true
+      t.integer     :ranks,       null: false, array: true
 
       t.timestamps null: false
     end

@@ -77,7 +77,7 @@ ActiveRecord::Schema.define(version: 20150527163446) do
   create_table "sheets", force: :cascade do |t|
     t.string   "position",      null: false
     t.integer  "collection_id"
-    t.text     "ranks",         null: false, array: true
+    t.integer  "ranks",         null: false, array: true
     t.datetime "created_at",    null: false
     t.datetime "updated_at",    null: false
   end
