@@ -233,6 +233,7 @@ DEPENDENCIES
   pundit
   rails (= 4.2.1)
   rails-api
+  responders (~> 2.0)
   rspec-rails
   rubocop
   spring

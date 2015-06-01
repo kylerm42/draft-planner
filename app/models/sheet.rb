@@ -4,14 +4,15 @@ class Sheet < ActiveRecord::Base
   validates_uniqueness_of   :position, scope: :collection
   validate :ranked_players_match_sheet_position
 
-  # Callbacks
-  before_validation :ensure_int_ranks
-
   # Associations
   belongs_to :collection
 
   # Delegations
   delegate :user, to: :collection
+
+  def players
+    Player.where(id: ranks)
+  end
 
   private
 
@@ -19,9 +20,5 @@ class Sheet < ActiveRecord::Base
       unless (ranks - Player.where(position: position).map(&:id)).empty?
         errors.add(:ranks, "must only contain #{position}s")
       end
-    end
-
-    def ensure_int_ranks
-      self.ranks = ranks.map(&:to_i)
     end
 end

@@ -9,6 +9,7 @@ gem 'database_cleaner'                              # Ensure clean slate during 
 
 # Views/JSON/Filtering
 gem 'json'                                          # JSON support
+gem 'responders',           '~> 2.0'                # Controller responders
 gem 'active_model_serializers'                      # Convention JSON output
 
 # Authorization
