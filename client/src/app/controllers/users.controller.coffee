@@ -10,6 +10,7 @@ angular.module 'draftPlanner'
       $auth.submitRegistration $scope.registrationForm
         .then (resp) ->
           console.log 'registration success!'
+          $state.go 'collections.new'
         .catch (resp) ->
           console.log 'registration failed :('
   ]

@@ -1,10 +1,11 @@
 class CollectionController < ApplicationController
 
   def create
-    @collection = Collection.find(params[:dup_id])
-                            .deep_dup(permitted_params.merge({ user: User.first }))
+    @resource = Collection.find(params[:collection][:dup_id])
+                            .deep_dup(permitted_params.merge({ user: User.first,
+                                                               default: false }))
 
-    render json: @collection
+    respond_with @resource
   end
 
   private

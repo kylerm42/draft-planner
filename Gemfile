@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 # Essential
 gem 'rails',                '4.2.1'                 # Core Rails gem
-gem 'rails-api'
+gem 'rails-api'                                     # Subset of normal Rails app
 gem 'pg'                                            # Postgres database
 gem 'thin'                                          # Lightweight webserver
 gem 'database_cleaner'                              # Ensure clean slate during tests

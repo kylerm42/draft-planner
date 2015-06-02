@@ -1,13 +1,12 @@
-form(ng-submit='handleRegBtnClick()', role='form', ng-init='registrationForm = {}')
-  .ui.form
-    .field
-      label(for='email') Email
-      input#email(type='text', name='email', ng-model='registrationForm.email', required)
-    .field
-      label(for='password') Password
-      input#password(type='password', name='password', ng-model='registrationForm.password', required)
-    .field
-      label(for='password_confirmation') Password Confirmation
-      input#password(type='password', name='password_confirmation', ng-model='registrationForm.password_confirmation', required)
+form.ui.form(ng-submit='handleRegBtnClick()', role='form', ng-init='registrationForm = {}')
+  .field
+    label(for='email') Email
+    input#email(type='text', name='email', ng-model='registrationForm.email', required)
+  .field
+    label(for='password') Password
+    input#password(type='password', name='password', ng-model='registrationForm.password', required)
+  .field
+    label(for='password_confirmation') Password Confirmation
+    input#password(type='password', name='password_confirmation', ng-model='registrationForm.password_confirmation', required)
 
-    button.ui.submit.button Register
+  button.ui.submit.button Register
