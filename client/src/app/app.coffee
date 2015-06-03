@@ -1,4 +1,4 @@
-app = angular.module 'draftPlanner', ['ng', 'ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 'ngResource', 'ui.router', 'ng-token-auth', 'rails']
+angular.module 'draftPlanner', ['ng', 'ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 'ngResource', 'ui.router', 'ng-token-auth', 'rails']
   .config ($stateProvider, $urlRouterProvider, $rootScopeProvider) ->
     $stateProvider
       .state 'home',
@@ -22,9 +22,9 @@ app = angular.module 'draftPlanner', ['ng', 'ngAnimate', 'ngCookies', 'ngTouch',
         templateUrl:  'app/views/collections/new.html',
         controller:   'NewCollectionsCtrl'
       .state 'collections.show',
-        url:          '/show',
+        url:          '/:id/:pos',
         templateUrl:  'app/views/collections/show.html',
-        controller:   'NewCollectionsCtrl'
+        controller:   'ShowCollectionsCtrl'
 
     $urlRouterProvider.otherwise '/'
 
