@@ -7,6 +7,7 @@ defenses = CSV.open('lib/nfl_stats_defenses_2014.csv', headers: true, header_con
 Player.transaction do
   players.to_a.each do |row|
     row[:birthdate] = Date.strptime(row[:birthdate], '%m/%d/%y')
+    row[:age] = (Time.now.to_s(:number).to_i - row[:birthdate].to_time.to_s(:number).to_i)/10e9.to_i
     Player.create(row.to_hash)
   end
 

@@ -1,62 +1,26 @@
 .ui.purple.raised.segment
   h1.ui.dividing.header.centered {{ collection.name }}
-  .ui.fluid.six.item.secondary.menu
-    a.item(ng-repeat='pos in positions' data-pos='{{pos}}' ng-class='{ active: pos === activePos }') {{ pos.toUpperCase() }}
+  .ui.fluid.six.item.teal.inverted.menu
+    a.item(ng-repeat="pos in ['qb', 'rb', 'wr', 'te', 'def', 'k']",
+           ng-class='{ active: pos === activePos, purple: pos === activePos }',
+           ng-click='updateSheet(pos)',
+           data-pos='{{pos}}') {{ pos.toUpperCase() }}
 
-  .ui.divided.list
-    .item
-      .content
-        .ui.ribbon.label #1
-        .right.floated.ui.tiny.statistic
-          .value 150
-          .label Points 2014
-        a.header Player Name
-        .description POS - TEAM
-    .item
-      .content
-        .ui.ribbon.label #1
-        .right.floated.ui.tiny.statistic
-          .value 150
-          .label Points 2014
-        a.header Player Name
-        .description POS - TEAM
-    .item
-      .content
-        .ui.ribbon.label #1
-        .right.floated.ui.tiny.statistic
-          .value 150
-          .label Points 2014
-        a.header Player Name
-        .description POS - TEAM
-    .item
-      .content
-        .ui.ribbon.label #1
-        .right.floated.ui.tiny.statistic
-          .value 150
-          .label Points 2014
-        a.header Player Name
-        .description POS - TEAM
-    .item
-      .content
-        .ui.ribbon.label #1
-        .right.floated.ui.tiny.statistic
-          .value 150
-          .label Points 2014
-        a.header Player Name
-        .description POS - TEAM
-    .item
-      .content
-        .ui.ribbon.label #1
-        .right.floated.ui.tiny.statistic
-          .value 150
-          .label Points 2014
-        a.header Player Name
-        .description POS - TEAM
-    .item
-      .content
-        .ui.ribbon.label #1
-        .right.floated.ui.tiny.statistic
-          .value 150
-          .label Points 2014
-        a.header Player Name
-        .description POS - TEAM
+  .ui.divided.list(ng-sortable='rankSortable')
+    .ui.inverted.dimmer
+      .ui.text.loader Loading
+    .item(ng-repeat='player in sheet.players')
+      .content.aligned
+        .ui.grid
+          .six.wide.column
+            .ui.massive.label.left.floated.sortable-handle
+              i.small.sort.teal.icon.left.floated
+              | # {{ $index + 1 }}
+            img.ui.image.left.floated(ng-src='assets/images/nfl_logos/{{ player.team.toLowerCase() }}.png')
+            a.header {{ player.name }}
+            .description {{ player.position }} - {{ player.team }}
+          .eight.wide.column
+          .two.wide.column
+            .right.floated.ui.tiny.statistic
+              .value {{ player.points }}
+              .label 2014 Points

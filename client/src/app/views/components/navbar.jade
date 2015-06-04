@@ -7,7 +7,6 @@
       a.ui.button(href='#/sign_in') Sign in
     .item(ng-show='!user.id')
       a.ui.teal.button(href='#/sign_up') Sign up
-    .item(ng-show='user.id')
-      {{ user.email }}
+    .item(ng-show='user.id') {{ user.email }}
     .item(ng-show='user.id')
       a.ui.teal.button(ng-click='signOut()') Sign out

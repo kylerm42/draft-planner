@@ -1,4 +1,5 @@
-angular.module 'draftPlanner', ['ng', 'ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 'ngResource', 'ui.router', 'ng-token-auth', 'rails']
+angular.module 'draftPlanner', ['ng', 'ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize',
+                                'ngResource', 'ui.router', 'ng-token-auth', 'rails', 'ng-sortable']
   .config ($stateProvider, $urlRouterProvider, $rootScopeProvider) ->
     $stateProvider
       .state 'home',
@@ -22,7 +23,7 @@ angular.module 'draftPlanner', ['ng', 'ngAnimate', 'ngCookies', 'ngTouch', 'ngSa
         templateUrl:  'app/views/collections/new.html',
         controller:   'NewCollectionsCtrl'
       .state 'collections.show',
-        url:          '/:id/:pos',
+        url:          '/:id/:position',
         templateUrl:  'app/views/collections/show.html',
         controller:   'ShowCollectionsCtrl'
 
@@ -30,4 +31,20 @@ angular.module 'draftPlanner', ['ng', 'ngAnimate', 'ngCookies', 'ngTouch', 'ngSa
 
   .factory 'Collection', (RailsResource) ->
     class Collection extends RailsResource
-      @configure url: '/api/collection', name: 'collection'
+      @configure
+        url: '/api/collection',
+        name: 'collection'
+
+  .factory 'Sheet', (RailsResource, railsSerializer) ->
+    class Sheet extends RailsResource
+      @configure
+        url: '/api/collection/{{collectionId}}/{{position}}',
+        name: 'sheet',
+        serializer: railsSerializer () ->
+          this.resource 'players', 'Player'
+
+  .factory 'Player', (RailsResource) ->
+    class Player extends RailsResource
+      @configure
+        url: '/api/collection/{{collectionId}}/{{position}}/player',
+        name: 'player'

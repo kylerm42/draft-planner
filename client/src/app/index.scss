@@ -6,6 +6,40 @@
   margin-top: 1rem;
   margin-bottom: 2rem;
 }
+
+.ghost {
+  opacity: .5;
+  background: #a5dfdd;
+}
+
+.ui.divided.list {
+  .ui.massive.label.left.floated {
+    margin-right: 0.5em;
+  }
+
+  img.ui.image.left.floated {
+    height: 3em;
+    width: 3em;
+  }
+
+  a.header {
+    margin-top: 0.4em;
+  }
+
+  .ui.loader {
+    top: 2%;
+  }
+
+  .ui.massive.label {
+    padding: 0.6em 0.4em;
+    cursor: move;
+
+    i.icon {
+      margin: 0.1em 0.3em 0 0;
+    }
+
+  }
+}
 /* Do not remove this comments bellow. It's the markers used by gulp-inject to inject
    all your sass files automatically */
 // injector
