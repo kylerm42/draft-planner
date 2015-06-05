@@ -1,9 +1,11 @@
 .ui.purple.segment
   h1.ui.dividing.header.centered Create a rankings set
   form.ui.form(role='form', ng-submit='handleCollectionCreation()')
+    .ui.inverted.dimmer
+      .ui.loader
     .field
       label(for='collection_dup_id') Choose a base set of ranks
-      select.ui.dropdown(ng-model='collection.dup_id', convert-to-number)
+      select.ui.dropdown(ng-model='collection.dup_id', name='collection_dup_id' convert-to-number)
         option(value='') Collections
         option(ng-repeat='col in collections', value='{{ col.id }}') {{ col.name }}
     .field

@@ -4,7 +4,7 @@ class Collection < ActiveRecord::Base
 
   # Associations
   belongs_to :user
-  has_many   :sheets
+  has_many   :sheets, dependent: :destroy
 
   def deep_dup(options = {})
     dup.tap do |kopy|

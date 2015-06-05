@@ -3,24 +3,28 @@
   .ui.fluid.six.item.teal.inverted.menu
     a.item(ng-repeat="pos in ['qb', 'rb', 'wr', 'te', 'def', 'k']",
            ng-class='{ active: pos === activePos, purple: pos === activePos }',
-           ng-click='updateSheet(pos)',
+           ng-click='updatePosition(pos)',
            data-pos='{{pos}}') {{ pos.toUpperCase() }}
 
-  .ui.divided.list(ng-sortable='rankSortable')
+  #list
     .ui.inverted.dimmer
       .ui.text.loader Loading
-    .item(ng-repeat='player in sheet.players')
-      .content.aligned
-        .ui.grid
-          .six.wide.column
-            .ui.massive.label.left.floated.sortable-handle
-              i.small.sort.teal.icon.left.floated
-              | # {{ $index + 1 }}
-            img.ui.image.left.floated(ng-src='assets/images/nfl_logos/{{ player.team.toLowerCase() }}.png')
-            a.header {{ player.name }}
-            .description {{ player.position }} - {{ player.team }}
-          .eight.wide.column
-          .two.wide.column
-            .right.floated.ui.tiny.statistic
-              .value {{ player.points }}
-              .label 2014 Points
+    .ui.divided.list(ng-sortable='rankSortable')
+      .item(ng-repeat='player in sortedPlayers')
+        .content.aligned
+          .ui.grid
+            .six.wide.column
+              .ui.massive.label.left.floated.sortable-handle
+                i.small.sort.teal.icon.left.floated
+                | {{ $index + 1 }}
+              img.ui.image.left.floated(ng-src='assets/images/nfl_logos/{{ player.team.toLowerCase() }}.png')
+              a.header {{ player.name }}
+              .description {{ player.position }} - {{ player.team }}
+            .eight.wide.column
+            .two.wide.column
+              .right.floated.ui.tiny.statistic
+                .value {{ player.points }}
+                .label 2014 Points
+
+#save-button
+  i.circular.big.green.inverted.checkmark.icon

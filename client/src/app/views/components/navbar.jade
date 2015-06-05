@@ -1,12 +1,24 @@
 .ui.large.purple.inverted.menu(ng-controller='NavbarCtrl')
   .header.item
     i.spy.icon
-    a(href='#/') Draft Planner
+    span
+      a(href='#/') Draft Planner
   .right.menu
     .item(ng-show='!user.id')
       a.ui.button(href='#/sign_in') Sign in
     .item(ng-show='!user.id')
       a.ui.teal.button(href='#/sign_up') Sign up
-    .item(ng-show='user.id') {{ user.email }}
+    .ui.dropdown.item(ng-show='user.id')
+      | Your Rankings
+      i.dropdown.icon
+      .menu
+        a.item Rankings 1
+        a.item Rankings 2
+        a.item Rankings 3
+        a.item Rankings 4
+        .divider
+        a.item(href='#/collections/new')
+          i.plus.icon
+          | Create new sheet
     .item(ng-show='user.id')
       a.ui.teal.button(ng-click='signOut()') Sign out

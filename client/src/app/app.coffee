@@ -17,7 +17,9 @@ angular.module 'draftPlanner', ['ng', 'ngAnimate', 'ngCookies', 'ngTouch', 'ngSa
       .state 'collections',
         abstract:     true,
         url:          '/collections',
-        templateUrl:  'app/views/collections/collections.html'
+        templateUrl:  'app/views/collections/collections.html',
+        resolve:
+          auth: ($auth) -> $auth.validateUser()
       .state 'collections.new',
         url:          '/new',
         templateUrl:  'app/views/collections/new.html',
@@ -32,19 +34,20 @@ angular.module 'draftPlanner', ['ng', 'ngAnimate', 'ngCookies', 'ngTouch', 'ngSa
   .factory 'Collection', (RailsResource) ->
     class Collection extends RailsResource
       @configure
-        url: '/api/collection',
+        url: '/api/collections',
         name: 'collection'
 
   .factory 'Sheet', (RailsResource, railsSerializer) ->
     class Sheet extends RailsResource
       @configure
-        url: '/api/collection/{{collectionId}}/{{position}}',
+        url: '/api/collections/{{collectionId}}/{{position}}',
         name: 'sheet',
         serializer: railsSerializer () ->
           this.resource 'players', 'Player'
+          this.only 'ranks'
 
   .factory 'Player', (RailsResource) ->
     class Player extends RailsResource
       @configure
-        url: '/api/collection/{{collectionId}}/{{position}}/player',
+        url: '/api/players',
         name: 'player'

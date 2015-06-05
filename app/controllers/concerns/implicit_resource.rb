@@ -39,12 +39,11 @@ module Concerns
       end
 
       def collection
-        @collection = policy_scope(klass.all)
-        # @collection ||= if respond_to?(:policy_scope)
-        #   policy_scope(apply_scopes(klass.all))
-        # else
-        #   apply_scopes(klass.all)
-        # end
+        @collection ||= if respond_to?(:policy_scope)
+          policy_scope(apply_scopes(klass.all))
+        else
+          klass.all
+        end
       end
 
       def initialize_existing_resource(id)
@@ -55,6 +54,10 @@ module Concerns
         klass.new(permitted_params).tap do |record|
           record.user = current_user if record.respond_to?(:user=)
         end
+      end
+
+      def collection_or_resource
+        params[:id] || action_name == 'create' ? resource : collection
       end
   end
 end

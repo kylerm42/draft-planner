@@ -2,14 +2,35 @@
   margin-top: 0;
 }
 
+// navbar
 .ui.inverted.menu {
   margin-top: 1rem;
   margin-bottom: 2rem;
 }
 
+.ui.menu span a {
+  color: #ffffff
+}
+
+//sortable
 .ghost {
   opacity: .5;
   background: #a5dfdd;
+}
+
+// collections
+#list {
+  min-height: 8em;
+
+  .ui.loader {
+    top: 4em;
+  }
+}
+
+#save-button {
+  position: fixed;
+  bottom: 1em;
+  right: 1em;
 }
 
 .ui.divided.list {
@@ -24,10 +45,6 @@
 
   a.header {
     margin-top: 0.4em;
-  }
-
-  .ui.loader {
-    top: 2%;
   }
 
   .ui.massive.label {

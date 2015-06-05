@@ -38,6 +38,10 @@ class ApplicationPolicy
     Pundit.policy_scope!(user, record.class)
   end
 
+  def authenticated?
+    !!user
+  end
+
   class Scope
     attr_reader :user, :scope
 
