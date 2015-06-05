@@ -1,15 +1,16 @@
 class CollectionsController < ApplicationController
-  # include Concerns::Authorization
+  include Concerns::Authorization
+
+  def index
+    respond_with collection, each_serializer: CollectionPreviewSerializer
+  end
 
   def create
-    p '============ before defining @resource'
-    @resource = Collection.find(params[:collection][:dup_id])
-                            .deep_dup(permitted_params.merge({ user: current_user,
-                                                               default: false }))
+    @record = Collection.find(params[:collection][:dup_id])
+                          .deep_dup(permitted_params.merge({ user: current_user,
+                                                             default: false }))
 
-    p '=============== after defining @resource, before respond_with'
-
-    respond_with @resource
+    respond_with @record
   end
 
   private

@@ -1,10 +1,10 @@
 class SheetsController < ApplicationController
-  # include Concerns::Authorization
+  include Concerns::Authorization
 
   def show
-    @resource = Sheet.find_by(position: params[:position].upcase, collection_id: params[:collection_id])
+    @record = Sheet.find_by(position: params[:position].upcase, collection_id: params[:collection_id])
 
-    respond_with @resource
+    respond_with @record
   end
 
   private

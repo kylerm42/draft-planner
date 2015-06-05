@@ -15,11 +15,6 @@ angular.module 'draftPlanner'
           console.log resp
       )
 
-    $rootScope.$on 'auth:logout-success', (evt) ->
-      console.log 'signed out'
-      console.log evt
-      $state.go 'home'
-
     $scope.$on 'auth:session-expired', (evt) ->
       console.log 'session expired'
       console.log evt

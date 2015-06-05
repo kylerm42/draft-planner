@@ -16,6 +16,6 @@ class SheetPolicy < ApplicationPolicy
   private
 
     def owned?
-      record.collection.user == user
+      record.all? { |r| r.collection.user == user }
     end
 end

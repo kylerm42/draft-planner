@@ -14,7 +14,7 @@ module Concerns
     end
 
     def authorize_resource
-      authorize collection_or_resource
+      authorize collection_or_record
     end
   end
 end
