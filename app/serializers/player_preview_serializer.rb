@@ -1,3 +1,3 @@
 class PlayerPreviewSerializer < ActiveModel::Serializer
-  attributes :id, :name, :position, :team, :points, :age
+  attributes :id, :name, :position, :team, :points, :pos_rank, :age
 end

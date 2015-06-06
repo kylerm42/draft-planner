@@ -5,6 +5,9 @@ Rails.application.routes.draw do
       get ':position', to: 'sheets#show'
     end
     resources :players, only: :show
-    resources :sheets, only: [:update, :destroy]
+    resources :sheets, only: [:update, :destroy] do
+      resources :tags, only: [:index, :create, :update]
+    end
+    resources :tags, only: :show
   end
 end

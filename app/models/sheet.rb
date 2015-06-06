@@ -6,6 +6,7 @@ class Sheet < ActiveRecord::Base
 
   # Associations
   belongs_to :collection
+  has_many   :tags
 
   # Delegations
   delegate :user, to: :collection

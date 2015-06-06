@@ -20,11 +20,31 @@
               img.ui.image.left.floated(ng-src='assets/images/nfl_logos/{{ player.team.toLowerCase() }}.png')
               a.header {{ player.name }}
               .description {{ player.position }} - {{ player.team }}
-            .eight.wide.column
-            .two.wide.column
-              .right.floated.ui.tiny.statistic
+            .six.wide.column
+              form
+                .top.label-tags
+                  .ui.green.tag.tiny.label(ng-class='{inactive: !player.tag.sleeper}' ng-click='handleTagClick("sleeper", player, $event)')
+                    input(type='checkbox' hidden ng-model='player.tag.sleeper')
+                    i.heartbeat.icon
+                    | Sleeper
+                  .ui.yellow.tag.tiny.label(ng-class='{inactive: !player.tag.bust}' ng-click='handleTagClick("bust", player, $event)')
+                    input(type='checkbox' hidden ng-model='player.tag.bust')
+                    i.warning.sign.icon
+                    | Bust
+                .bottom.label-tags
+                  .ui.red.tag.tiny.label(ng-class='{inactive: !player.tag.injury}' ng-click='handleTagClick("injury", player, $event)')
+                    input(type='checkbox' hidden ng-model='player.tag.injury')
+                    i.hospital.icon
+                    | Injury Prone
+                  .ui.blue.tag.tiny.label.inactive
+                    i.write.icon
+                    | Notes
+            .four.wide.column
+              .ui.tiny.statistic.right.floated
                 .value {{ player.points }}
                 .label 2014 Points
+              .ui.tiny.label.right.floated \#{{player.posRank}}
+                .detail {{player.position}}
 
 #save-button
   i.circular.big.green.inverted.checkmark.icon

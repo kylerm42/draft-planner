@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150527163446) do
+ActiveRecord::Schema.define(version: 20150606135241) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -33,6 +33,7 @@ ActiveRecord::Schema.define(version: 20150527163446) do
     t.string   "team"
     t.decimal  "points",        precision: 6, scale: 2, default: 0.0, null: false
     t.decimal  "points_ppr",    precision: 6, scale: 2, default: 0.0, null: false
+    t.integer  "pos_rank",                              default: 0
     t.date     "birthdate"
     t.integer  "age"
     t.integer  "pass_comp",                             default: 0
@@ -85,6 +86,20 @@ ActiveRecord::Schema.define(version: 20150527163446) do
   add_index "sheets", ["collection_id"], name: "index_sheets_on_collection_id", using: :btree
   add_index "sheets", ["position", "collection_id"], name: "index_sheets_on_position_and_collection_id", unique: true, using: :btree
 
+  create_table "tags", force: :cascade do |t|
+    t.boolean  "sleeper",    default: false
+    t.boolean  "bust",       default: false
+    t.boolean  "injury",     default: false
+    t.text     "notes"
+    t.integer  "sheet_id"
+    t.integer  "player_id"
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+  end
+
+  add_index "tags", ["player_id"], name: "index_tags_on_player_id", using: :btree
+  add_index "tags", ["sheet_id"], name: "index_tags_on_sheet_id", using: :btree
+
   create_table "users", force: :cascade do |t|
     t.string   "provider",                            null: false
     t.string   "uid",                    default: "", null: false
@@ -110,4 +125,6 @@ ActiveRecord::Schema.define(version: 20150527163446) do
 
   add_foreign_key "collections", "users"
   add_foreign_key "sheets", "collections"
+  add_foreign_key "tags", "players"
+  add_foreign_key "tags", "sheets"
 end

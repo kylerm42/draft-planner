@@ -31,11 +31,13 @@ angular.module 'draftPlanner', ['ng', 'ngAnimate', 'ngCookies', 'ngTouch', 'ngSa
 
     $urlRouterProvider.otherwise '/'
 
-  .factory 'Collection', (RailsResource) ->
+  .factory 'Collection', (RailsResource, railsSerializer) ->
     class Collection extends RailsResource
       @configure
         url: '/api/collections',
-        name: 'collection'
+        name: 'collection',
+        serializer: railsSerializer () ->
+          this.resource 'sheets', 'Sheet'
 
   .factory 'Sheet', (RailsResource, railsSerializer) ->
     class Sheet extends RailsResource
@@ -44,6 +46,7 @@ angular.module 'draftPlanner', ['ng', 'ngAnimate', 'ngCookies', 'ngTouch', 'ngSa
         name: 'sheet',
         serializer: railsSerializer () ->
           this.resource 'players', 'Player'
+          this.resource 'tags', 'Tag'
           this.only 'ranks'
 
   .factory 'Player', (RailsResource) ->
@@ -51,3 +54,9 @@ angular.module 'draftPlanner', ['ng', 'ngAnimate', 'ngCookies', 'ngTouch', 'ngSa
       @configure
         url: '/api/players',
         name: 'player'
+
+  .factory 'Tag', (RailsResource) ->
+    class Tag extends RailsResource
+      @configure
+        url: '/api/sheets/{{sheetId}}/tags/{{id}}',
+        name: 'tag'

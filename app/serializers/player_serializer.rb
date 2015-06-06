@@ -1,5 +1,5 @@
 class PlayerSerializer < ActiveModel::Serializer
-  attributes :id, :name, :position, :team, :points, :points_ppr, :birthdate, :age, :stats
+  attributes :id, :name, :position, :team, :points, :points_ppr, :pos_rank, :birthdate, :age, :stats
 
   def stats
     categories = if object.position == 'DEF'

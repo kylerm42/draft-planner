@@ -9,7 +9,7 @@
 }
 
 .ui.menu span a {
-  color: #ffffff
+  color: #ffffff;
 }
 
 //sortable
@@ -34,28 +34,51 @@
 }
 
 .ui.divided.list {
-  .ui.massive.label.left.floated {
-    margin-right: 0.5em;
-  }
-
+  // team logo
   img.ui.image.left.floated {
     height: 3em;
     width: 3em;
   }
-
+  //player name
   a.header {
     margin-top: 0.4em;
   }
-
+  // user rank label
   .ui.massive.label {
+    margin-right: 0.5em;
     padding: 0.6em 0.4em;
     cursor: move;
 
     i.icon {
       margin: 0.1em 0.3em 0 0;
     }
-
   }
+  // position rank label
+  .ui.tiny.label {
+    .detail {
+      margin-left: 0.5em;
+    }
+  }
+  // tag labels
+  .bottom.label-tags {
+    margin-top: .3em;
+  }
+  .label-tags {
+    .ui.tag.label {
+      padding-right: 1em;
+      padding-left: 1em;
+      cursor: pointer;
+    }
+
+    .ui.tag.label.inactive {
+      opacity: 0.3;
+
+      &:hover {
+        opacity: 0.9;
+      }
+    }
+  }
+
 }
 /* Do not remove this comments bellow. It's the markers used by gulp-inject to inject
    all your sass files automatically */

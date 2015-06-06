@@ -13,6 +13,7 @@ Player.transaction do
 
   kickers.to_a.each do |row|
     row[:birthdate] = Date.strptime(row[:birthdate], '%m/%d/%y')
+    row[:age] = (Time.now.to_s(:number).to_i - row[:birthdate].to_time.to_s(:number).to_i)/10e9.to_i
     Player.create(row.to_hash)
   end
 
@@ -28,6 +29,15 @@ User.create(email: 'test3@example.com', password: 'test123', provider: 'email')
 collection = user.collections.create(name: 'Test collection', default: true)
 
 {'QB' => 40, 'RB' => 100, 'WR' => 100, 'TE' => 40, 'DEF' => 32, 'K' => 32}.each do |position, count|
+  # create collection and sheets
   ranks = Player.where(position: position).order(points: :desc).limit(count).map(&:id)
   collection.sheets.create(position: position, ranks: ranks)
+
+  # set player ranks
+  Player.transaction do
+    players = Player.where(position: position).order(points: :desc)
+    players.each_with_index do |player, idx|
+      player.update(pos_rank: idx + 1)
+    end
+  end
 end

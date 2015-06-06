@@ -9,13 +9,10 @@
     .item(ng-show='!user.id')
       a.ui.teal.button(href='#/sign_up') Sign up
     .ui.dropdown.item(ng-show='user.id')
-      | Your Rankings
+      | My Rankings
       i.dropdown.icon
       .menu
-        a.item Rankings 1
-        a.item Rankings 2
-        a.item Rankings 3
-        a.item Rankings 4
+        a.item(ng-repeat='collection in collections' ng-href='#/collections/{{collection.id}}/') {{ collection.name }}
         .divider
         a.item(href='#/collections/new')
           i.plus.icon

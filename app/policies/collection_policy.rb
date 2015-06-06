@@ -1,16 +1,18 @@
 class CollectionPolicy < ApplicationPolicy
   def show?
-    p '============ before owned?'
     owned?
-    p '============= after owned?'
+  end
+
+  def index?
+    true
   end
 
   class Scope < ApplicationPolicy::Scope
     def resolve
       if user
-        scope.where(['"default" = true OR "user_id" = ?', user.id])
+        super.where(['"default" = true OR "user_id" = ?', user.id])
       else
-        scope
+        super.where(default: true)
       end
     end
   end
