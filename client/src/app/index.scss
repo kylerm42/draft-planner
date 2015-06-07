@@ -55,14 +55,15 @@
   }
   // position rank label
   .ui.tiny.label {
-    .detail {
+    .detail.pos-rank {
       margin-left: 0.5em;
     }
   }
-  // tag labels
+  // list item labels
   .bottom.label-tags {
     margin-top: .3em;
   }
+
   .label-tags {
     .ui.tag.label {
       padding-right: 1em;
@@ -70,7 +71,20 @@
       cursor: pointer;
     }
 
-    .ui.tag.label.inactive {
+    .detail.age-tag {
+      margin-left: 0;
+      margin-right: 0.5em;
+    }
+
+    .ui.circular.label {
+      cursor: pointer;
+
+      i.icon {
+        margin-right: 0;
+      }
+    }
+
+    .ui.label.inactive {
       opacity: 0.3;
 
       &:hover {

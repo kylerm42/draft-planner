@@ -43,8 +43,16 @@
               .ui.tiny.statistic.right.floated
                 .value {{ player.points }}
                 .label 2014 Points
-              .ui.tiny.label.right.floated \#{{player.posRank}}
-                .detail {{player.position}}
+              .right.floated
+                .top.label-tags
+                  .ui.tiny.label \#{{player.posRank}}
+                    .detail.pos-rank {{player.position}}
+                .bottom.label-tags
+                  .ui.tiny.label
+                    .detail.age-tag Age
+                    | {{player.age}}
+                  //- .ui.red.circular.mini.label.right.floated(ng-class='{inactive: !player.tag.removed}')
+                  //-   i.ban.icon
 
 #save-button
   i.circular.big.green.inverted.checkmark.icon

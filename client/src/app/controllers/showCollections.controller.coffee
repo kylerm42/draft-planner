@@ -7,11 +7,11 @@ angular.module "draftPlanner"
       sheet = null
       collection = null
 
-      $('.ui.segment .ui.dimmer').dimmer('show')
+      $('#list .ui.dimmer').dimmer('show')
 
       # update selected position
       $scope.updatePosition = (pos) ->
-        $('.ui.segment .ui.dimmer').dimmer('show')
+        $('#list .ui.dimmer').dimmer('show')
 
         $scope.activePos = pos
         sheet = $.grep collection.sheets, (sht) ->
@@ -29,7 +29,7 @@ angular.module "draftPlanner"
           chosenOne = $.grep players, (player) ->
             player.id == id
           chosenOne = chosenOne[0]
-        $('.ui.segment .ui.dimmer').dimmer('hide')
+        $('#list .ui.dimmer').dimmer('hide')
         null
 
       # save sheets
@@ -84,7 +84,7 @@ angular.module "draftPlanner"
           $scope.collection = col
           $scope.updatePosition($stateParams.position.toLowerCase() || 'rb')
 
-          $('.ui.segment .ui.dimmer').dimmer('hide')
+          $('#list .ui.dimmer').dimmer('hide')
         (error) ->
           console.log 'error loading collection'
           console.log error
