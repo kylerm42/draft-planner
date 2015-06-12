@@ -5,7 +5,6 @@ class CreatePlayers < ActiveRecord::Migration
       t.string    :position,      null: false
       t.string    :team
       t.decimal   :points,        null: false, precision: 6, scale: 2, default: 0.0
-      t.decimal   :points_ppr,    null: false, precision: 6, scale: 2, default: 0.0
       t.integer   :pos_rank,      default: 0
       t.date      :birthdate
       t.integer   :age
@@ -49,5 +48,6 @@ class CreatePlayers < ActiveRecord::Migration
     end
 
     add_index :players, :position
+    add_index :players, :name
   end
 end

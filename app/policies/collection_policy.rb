@@ -7,6 +7,14 @@ class CollectionPolicy < ApplicationPolicy
     true
   end
 
+  def update?
+    owned?
+  end
+
+  def destroy?
+    owned?
+  end
+
   class Scope < ApplicationPolicy::Scope
     def resolve
       if user

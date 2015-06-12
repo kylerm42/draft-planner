@@ -1,5 +1,3 @@
 class PlayerPreviewSerializer < ActiveModel::Serializer
-  attributes :id, :name, :position, :team, :points, :pos_rank, :age
-
-  # has_many :tags
+  attributes :id, :name, :position, :team, :points, :receptions, :pos_rank, :age
 end

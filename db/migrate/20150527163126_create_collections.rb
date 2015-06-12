@@ -4,6 +4,7 @@ class CreateCollections < ActiveRecord::Migration
       t.string      :name,        null: false
       t.references  :user,        index: true, foreign_key: true
       t.boolean     :default,     default: false
+      t.float       :ppr,         default: 0
 
       t.timestamps                null: false
     end

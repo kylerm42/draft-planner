@@ -1,14 +1,16 @@
 angular.module "draftPlanner"
-  .controller "NewCollectionsCtrl", ['$scope', '$state', 'Collection', ($scope, $state, Collection) ->
+  .controller "NewCollectionsCtrl", ['$scope', '$rootScope', '$state', 'Collection', ($scope, $rootScope, $state, Collection) ->
 
     $('.ui.segment .ui.dimmer').dimmer('show')
 
-    $scope.collection = new Collection()
+    $scope.collection = new Collection
+      ppr: 0
 
     $scope.handleCollectionCreation = () ->
       $scope.collection.create().then(
         (collection) ->
           console.log 'collection created'
+          $rootScope.collections.push collection
           $state.go 'collections.show', id: collection.id
         (error) ->
           console.log 'error creating collection'

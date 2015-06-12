@@ -1,6 +1,10 @@
 class CollectionsController < ApplicationController
   include Concerns::Authorization
 
+  # Scopes
+  has_scope :defualt, type: :boolean
+  has_scope :user_id
+
   def index
     respond_with collection, each_serializer: CollectionPreviewSerializer
   end
@@ -16,6 +20,6 @@ class CollectionsController < ApplicationController
   private
 
     def permitted_params
-      params.require(:collection).permit(:name)
+      params.require(:collection).permit(:name, :ppr)
     end
 end

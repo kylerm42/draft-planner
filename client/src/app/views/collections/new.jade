@@ -4,12 +4,16 @@
     .ui.inverted.dimmer
       .ui.loader
     .field
-      label(for='collection_dup_id') Choose a base set of ranks
-      select.ui.dropdown(ng-model='collection.dup_id', name='collection_dup_id' convert-to-number)
-        option(value='') Collections
-        option(ng-repeat='col in collections', value='{{ col.id }}') {{ col.name }}
-    .field
       label(for='collection_name') Name your rankings
-      input(type='text', name='collection_name', ng-model='collection.name' placeholder='Enter rankings name' required)
+      input(type='text', name='collection_name', ng-model='collection.name' placeholder='League name, scoring settings, etc.' required)
+    .fields
+      .ten.wide.field
+        label(for='collection_dup_id') Choose a base set of ranks
+        select.ui.dropdown(ng-model='collection.dup_id', name='collection_dup_id' required)
+          option(value='') FantasyPros, ESPN, Matthew Berry, etc.
+          option(ng-repeat='col in collections', value='{{ col.id }}') {{ col.name }}
+      .six.wide.field
+        label(for='collection_ppr') PPR
+        input(type='number' name='collection_ppr' ng-model='collection.ppr' step='0.1')
 
     button.ui.submit.button Create

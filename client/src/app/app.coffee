@@ -1,5 +1,6 @@
 angular.module 'draftPlanner', ['ng', 'ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize',
-                                'ngResource', 'ui.router', 'ng-token-auth', 'rails', 'ng-sortable']
+                                'ngResource', 'ui.router', 'ng-token-auth', 'rails',
+                                'ng-sortable']
   .config ($stateProvider, $urlRouterProvider, $rootScopeProvider) ->
     $stateProvider
       .state 'home',
@@ -38,11 +39,12 @@ angular.module 'draftPlanner', ['ng', 'ngAnimate', 'ngCookies', 'ngTouch', 'ngSa
         name: 'collection',
         serializer: railsSerializer () ->
           this.resource 'sheets', 'Sheet'
+          this.only 'name', 'ppr', 'dup_id'
 
   .factory 'Sheet', (RailsResource, railsSerializer) ->
     class Sheet extends RailsResource
       @configure
-        url: '/api/collections/{{collectionId}}/{{position}}',
+        url: '/api/sheets',
         name: 'sheet',
         serializer: railsSerializer () ->
           this.resource 'players', 'Player'
@@ -60,3 +62,16 @@ angular.module 'draftPlanner', ['ng', 'ngAnimate', 'ngCookies', 'ngTouch', 'ngSa
       @configure
         url: '/api/sheets/{{sheetId}}/tags/{{id}}',
         name: 'tag'
+
+Array.prototype.move = (from, to) ->
+  tmp = this[from]
+
+  if from < to
+    for i in [from..to]
+      this[i] = this[i + 1]
+
+  else
+    for i in [from..to]
+      this[i] = this[i - 1]
+
+  this[to] = tmp

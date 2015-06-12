@@ -3,7 +3,6 @@ FactoryGirl.define do
     name { Faker::Name.name }
     position { %w(QB RB WR TE DEF K).sample }
     points 150.00
-    points_ppr 174.50
   end
 
   %w(QB RB WR TE DEF K).each do |pos|

@@ -11,6 +11,10 @@ class Sheet < ActiveRecord::Base
   # Delegations
   delegate :user, to: :collection
 
+  # Scopes
+  scope :by_position, -> position { where(position: position) }
+  scope :by_collection_id, -> collection_id { where(collection_id: collection_id) }
+
   def players
     Player.where(id: ranks)
   end

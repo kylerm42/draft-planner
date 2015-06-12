@@ -1,6 +1,6 @@
 class SheetPolicy < ApplicationPolicy
   def show?
-    authenticated? && owned?
+    home? || (authenticated? && owned?)
   end
 
   class Scope < ApplicationPolicy::Scope
@@ -16,6 +16,10 @@ class SheetPolicy < ApplicationPolicy
   private
 
     def owned?
-      record.all? { |r| r.collection.user == user }
+      record.collection.user == user
+    end
+
+    def home?
+      record.collection.id == 1
     end
 end

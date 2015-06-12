@@ -20,6 +20,7 @@ ActiveRecord::Schema.define(version: 20150606135241) do
     t.string   "name",                       null: false
     t.integer  "user_id"
     t.boolean  "default",    default: false
+    t.float    "ppr",        default: 0.0
     t.datetime "created_at",                 null: false
     t.datetime "updated_at",                 null: false
   end
@@ -32,7 +33,6 @@ ActiveRecord::Schema.define(version: 20150606135241) do
     t.string   "position",                                            null: false
     t.string   "team"
     t.decimal  "points",        precision: 6, scale: 2, default: 0.0, null: false
-    t.decimal  "points_ppr",    precision: 6, scale: 2, default: 0.0, null: false
     t.integer  "pos_rank",                              default: 0
     t.date     "birthdate"
     t.integer  "age"
@@ -73,6 +73,7 @@ ActiveRecord::Schema.define(version: 20150606135241) do
     t.datetime "updated_at",                                          null: false
   end
 
+  add_index "players", ["name"], name: "index_players_on_name", using: :btree
   add_index "players", ["position"], name: "index_players_on_position", using: :btree
 
   create_table "sheets", force: :cascade do |t|
@@ -90,6 +91,7 @@ ActiveRecord::Schema.define(version: 20150606135241) do
     t.boolean  "sleeper",    default: false
     t.boolean  "bust",       default: false
     t.boolean  "injury",     default: false
+    t.boolean  "removed",    default: false
     t.text     "notes"
     t.integer  "sheet_id"
     t.integer  "player_id"
@@ -101,13 +103,13 @@ ActiveRecord::Schema.define(version: 20150606135241) do
   add_index "tags", ["sheet_id"], name: "index_tags_on_sheet_id", using: :btree
 
   create_table "users", force: :cascade do |t|
-    t.string   "provider",                            null: false
-    t.string   "uid",                    default: "", null: false
-    t.string   "encrypted_password",     default: "", null: false
+    t.string   "provider",                               null: false
+    t.string   "uid",                    default: "",    null: false
+    t.string   "encrypted_password",     default: "",    null: false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",          default: 0,  null: false
+    t.integer  "sign_in_count",          default: 0,     null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
@@ -115,6 +117,7 @@ ActiveRecord::Schema.define(version: 20150606135241) do
     t.string   "name"
     t.string   "email"
     t.text     "tokens"
+    t.boolean  "admin",                  default: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end

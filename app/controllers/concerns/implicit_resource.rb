@@ -40,9 +40,9 @@ module Concerns
 
       def collection
         @collection ||= if respond_to?(:policy_scope)
-          policy_scope(klass.all)
+          policy_scope(apply_scopes(klass.all))
         else
-          klass.all
+          apply_scope(klass.all)
         end
       end
 

@@ -11,6 +11,7 @@ gem 'database_cleaner'                                  # Ensure clean slate dur
 gem 'json'                                              # JSON support
 gem 'responders',               '~> 2.0'                # Controller responders
 gem 'active_model_serializers', '~> 0.9.0'              # Convention JSON output
+gem 'has_scope'                                         # Query param filtering
 
 # Authorization
 gem 'devise_token_auth'                                 # User authentication for Angular

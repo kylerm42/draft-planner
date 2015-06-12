@@ -1,6 +1,6 @@
 .ui.large.purple.inverted.menu(ng-controller='NavbarCtrl')
   .header.item
-    i.spy.icon
+    i.trophy.icon
     span
       a(href='#/') Draft Planner
   .right.menu
@@ -16,6 +16,6 @@
         .divider
         a.item(href='#/collections/new')
           i.plus.icon
-          | Create new sheet
+          | Create new set
     .item(ng-show='user.id')
       a.ui.teal.button(ng-click='signOut()') Sign out

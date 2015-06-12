@@ -6,11 +6,95 @@ angular.module "draftPlanner"
       # define sheet for the page
       sheet = null
       collection = null
+      $scope.byes =
+        { 'ARI': 4, 'ATL': 9, 'BAL': 11, 'BUF': 9, 'CAR': 12, 'CHI': 9, 'CIN': 4, 'CLE': 4, 'DAL': 11, 'DEN': 4, 'DET': 9,
+        'GB':  9, 'HOU': 10, 'IND': 10, 'JAC': 11, 'KC':  6, 'MIA': 5, 'MIN': 10, 'NE':  10, 'NO':  6, 'NYG': 8, 'NYJ': 11,
+        'OAK': 5, 'PHI': 7, 'PIT': 12, 'SD':  10, 'STL': 4, 'SF':  8, 'SEA': 4, 'TB':  7, 'TEN': 9, 'WAS': 10 }
+      $scope.removedPlayers = []
+      $scope.sortedPlayers = []
 
       $('#list .ui.dimmer').dimmer('show')
+      $('#collection-edit').popup
+        on: 'click'
+        inline: true
+        transition: 'fade down'
+        position: 'bottom left'
+        offset: -10
+        onHidden: (node) ->
+          saveCollection(collection)
+      $('#collection-ppr').dropdown
+        on: 'click'
+      $scope.flash = {}
+
+      # flash messages
+      flash = (type, message, timeout) ->
+        console.log type + ': ' + message
+        $('#save-button').popup
+          title: type[0].toUpperCase() + type.slice(1)
+          content: message
+          position: 'top right'
+          offset: '-15'
+          on: 'manual'
+        $('#save-button').popup('show')
+
+        if timeout
+          setTimeout(
+            () -> $('#save-button').popup('hide')
+            timeout
+          )
+
+      handleError = (error, message) ->
+        $('#save-button i').removeClass('green checkmark blue loading asterisk')
+        $('#save-button i').addClass('red x')
+        flash('error', message)
+        console.log error
+
+      # save collection
+      saveCollection = (collection) ->
+        collection.save().then(
+          (c) ->
+            flash 'success', 'Settings saved', 1500
+          (error) ->
+            handleError error, 'Error updating collection'
+        )
+
+      # save sheets
+      saveSheet = (evt) ->
+        $('#save-button i').toggleClass('green blue checkmark asterisk loading')
+        sheet.ranks = $scope.sortedPlayers.map (player) ->
+          player.id
+        $scope.removedPlayers.forEach (player) ->
+          sheet.ranks.push player.id
+        sheet.update().then(
+          (s) ->
+            $('#save-button i').toggleClass('green blue checkmark asterisk loading')
+            console.log 'sheet saved'
+          (error) ->
+            handleError error, 'Error updating sheet'
+        )
+
+      # handle tag saving/updating
+      saveTag = (tag) ->
+        $('#save-button i').toggleClass('green blue checkmark asterisk loading')
+        tag.save().then(
+          (t) ->
+            $('#save-button i').toggleClass('green blue checkmark asterisk loading')
+            console.log 'tag saved'
+          (error) ->
+            handleError error, 'Error saving tag'
+        )
+
+      $scope.saveTag = (tag) -> saveTag(tag)
+
+      $scope.handleTagClick = (tagName, tag, $event) ->
+        tag[tagName] = !tag[tagName]
+        saveTag(tag)
 
       # update selected position
       $scope.updatePosition = (pos) ->
+        if pos == $scope.activePos
+          return
+
         $('#list .ui.dimmer').dimmer('show')
 
         $scope.activePos = pos
@@ -25,57 +109,64 @@ angular.module "draftPlanner"
             player.id == tag.playerId
           chosenOne[0].tag = tag
 
-        $scope.sortedPlayers = sheet.ranks.map (id) ->
+        $scope.sortedPlayers = []
+        $scope.removedPlayers = []
+        sheet.ranks.forEach (id) ->
           chosenOne = $.grep players, (player) ->
+            if !player.tag
+              player.tag = new Tag({
+                sheetId: sheet.id
+                playerId: player.id
+              })
             player.id == id
           chosenOne = chosenOne[0]
-        $('#list .ui.dimmer').dimmer('hide')
-        null
+          chosenOne.points = parseFloat(chosenOne.points)
 
-      # save sheets
-      saveSheet = (evt) ->
-        $('#save-button i').toggleClass('green blue checkmark asterisk loading')
-        sheet.ranks = $scope.sortedPlayers.map (player) ->
-          player.id
-        sheet.$patch('/api/sheets/' + sheet.id).then(
-          (s) ->
-            $('#save-button i').toggleClass('green blue checkmark asterisk loading')
-            console.log 'saved!'
-          (error) ->
-            console.log 'error saving sheet'
-            console.log error
+          if chosenOne.tag.removed
+            $scope.removedPlayers.push chosenOne
+          else
+            $scope.sortedPlayers.push chosenOne
+
+        $('#list .ui.dimmer').dimmer('hide')
+
+        setTimeout(
+          () ->
+            $('.label-tags .blue.tag').popup
+              on: 'click'
+              inline: true
+              transition: 'fade up'
+          5
         )
 
-      $scope.handleTagClick = (tagName, player, $event) ->
-        $('#save-button i').toggleClass('green blue checkmark asterisk loading')
-        if player.tag
-          player.tag[tagName] = !player.tag[tagName]
-          player.tag.update().then(
-            (t) ->
-              $('#save-button i').toggleClass('green blue checkmark asterisk loading')
-              console.log 'tag saved!'
-              console.log t
-            (error) ->
-              console.log 'error saving tag'
-              console.log error
-          )
-        else
-          tag = new Tag({
-            playerId: player.id
-            sheetId: sheet.id
-          })
-          tag[tagName] = true
-          player.tag = tag
+      $scope.showModal = (player) ->
+        $scope.modalPlayer = player
+        $('#player-modal').modal('show')
 
-          tag.create().then(
-            (t) ->
-              $('#save-button i').toggleClass('green blue checkmark asterisk loading')
-              console.log 'tag created'
-              console.log t
-            (error) ->
-              console.log 'error creating tag'
-              console.log error
-          )
+        player.get().then(
+          (p) ->
+            console.log 'player updated'
+          (error) ->
+            handleError error, 'Error fetching player'
+        )
+
+      $scope.evaluate = (number) ->
+        if isNaN(number)
+          0
+        else
+          number.toFixed(1)
+
+      $scope.removePlayer = (player, idx) ->
+        if player.tag.removed
+          $scope.removedPlayers.splice(idx, 1)
+          $scope.sortedPlayers.push(player)
+          player.tag.removed = false
+        else
+          $scope.sortedPlayers.splice(idx, 1)
+          $scope.removedPlayers.push(player)
+          player.tag.removed = true
+
+        saveTag(player.tag)
+        saveSheet()
 
       # get collection
       Collection.get($stateParams.id).then(
@@ -86,8 +177,7 @@ angular.module "draftPlanner"
 
           $('#list .ui.dimmer').dimmer('hide')
         (error) ->
-          console.log 'error loading collection'
-          console.log error
+          handleError error, 'Error loading collection'
           $state.go 'home'
       )
 
@@ -97,6 +187,7 @@ angular.module "draftPlanner"
         ghostClass: 'ghost'
         handle: '.sortable-handle'
         draggable: '.item'
+        filter: '.removed'
         onSort: saveSheet
       }
     ]

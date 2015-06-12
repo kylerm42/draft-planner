@@ -1,11 +1,9 @@
 class SheetsController < ApplicationController
   include Concerns::Authorization
 
-  def show
-    @record = Sheet.find_by(position: params[:position].upcase, collection_id: params[:collection_id])
-
-    respond_with @record
-  end
+  # Scopes
+  has_scope :by_position
+  has_scope :by_collection_id
 
   private
 

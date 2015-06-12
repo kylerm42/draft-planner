@@ -1,5 +1,253 @@
 .ui.purple.segment
   h1.ui.icon.header.center.aligned
-    i.spy.icon
+    i.yellow.trophy.icon
     .content.ui.teal.header Draft Planner
+      sup#beta-tag  BETA
       .sub.header Manage all your fantasy football rankings in one place!
+
+  .ui.centered.grid(ng-show='!user.id')
+    .five.wide.column
+      h4.ui.header.center.aligned Don't forget to register, it's free!
+        .sub.header Here's just a few of the features you'll have access to:
+      ul.ui.bulleted.list
+        li Save as many ranking sets as you want
+        li Choose from one of many starting points for your ranks, including ESPN, FantasyPros, and Matthew Berry
+        li Specify PPR settings for each set
+        li Frequent updates and new features
+    .two.wide.column
+    .five.wide.column
+      h4.ui.header Check out a preview of what you can do below:
+      ul.ui.bulleted.list
+        li Drag and drop, sortable rankings
+        li Tag players as sleepers, busts, injury prone, or make your own notes
+        li Remove players that may be keepers or on your "undraftable" list (don't worry, they'll stick around at the bottom if you change your mind)
+        li Click a player to see all their stats
+
+  .ui.horizontal.divider
+    i.yellow.trophy.icon
+  .ui.centered.grid
+    .fourteen.wide.column
+      h3.ui.header.center.aligned(ng-show='user.id') Sample Rankings
+        .sub.header Choose one of your ranking sets from the menu above, or
+          a(href='#/collections/new')  create one
+    .two.wide.column
+      .ui.form
+        .field
+          label(for='collection_ppr') PPR
+          .ui.transparent.mini.input
+            input(type='number' name='collection_ppr' ng-model='ppr' step='0.1')
+
+  #list
+    .ui.inverted.dimmer
+      .ui.text.loader Loading
+    .ui.divided.list#sortableList
+      .item(ng-repeat='player in sortedPlayers')
+        .content.aligned
+          .ui.grid
+            .six.wide.column
+              .ui.massive.label.left.floated.sortable-handle
+                i.small.sort.teal.icon.left.floated#home
+              img.ui.image.left.floated(ng-src='assets/images/nfl_logos/{{ player.team.toLowerCase() }}.png')
+              a.header(ng-click='showModal(player)') {{ player.name }}
+              .description {{ player.position }} - {{ player.team }}
+            .four.wide.column
+              .top.label-tags
+                .ui.green.tag.tiny.label(ng-class='{inactive: !player.tag.sleeper}' ng-click='handleTagClick("sleeper", player.tag, $event)')
+                  i.heartbeat.icon
+                  | Sleeper
+                .ui.yellow.tag.tiny.label(ng-class='{inactive: !player.tag.bust}' ng-click='handleTagClick("bust", player.tag, $event)')
+                  i.warning.sign.icon
+                  | Bust
+              .bottom.label-tags
+                .ui.red.tag.tiny.label(ng-class='{inactive: !player.tag.injury}' ng-click='handleTagClick("injury", player.tag, $event)')
+                  i.hospital.icon
+                  | Injury Prone
+                .ui.blue.tag.tiny.label(ng-class='{inactive: !player.tag.notes}')
+                  i.write.icon
+                  | Notes
+                .ui.popup
+                  .header Notes
+                  .ui.transparent.left.icon.input
+                    input(type='text' placeholder='Add notes...' ng-model='player.tag.notes' ng-blur='saveTag(player.tag)')
+                    i.write.icon
+            .six.wide.column
+              .six.wide.right.floated.right.aligned.column
+                .ui.tiny.statistic
+                  .value {{ player.points + (player.receptions * ppr) | number: 2 }}
+                  .label 2014 Points
+              .ten.wide.right.floated.right.aligned.column
+                .top.label-tags
+                  .ui.tiny.label.right.floated \#{{ player.posRank }}
+                    .detail.pos-rank {{ player.position }}
+                  .ui.red.circular.mini.label.right.floated(ng-class='{inactive: !player.tag.removed}' ng-click='removePlayer(player, $index)')
+                    i.ban.icon
+                .bottom.label-tags
+                  .ui.tiny.label.right.floated(ng-show='player.age')
+                    .detail.age-tag Age
+                    | {{ player.age }}
+                  .ui.tiny.label.right.floated
+                    .detail.age-tag Bye
+                    | {{ byes[player.team] }}
+
+    #removed-list(ng-show='removedPlayers.length > 0')
+      h4.ui.horizontal.header.divider
+        i.red.ban.icon
+        | Removed players
+
+      .ui.divided.list
+        .item(ng-repeat='player in removedPlayers')
+          .content.aligned
+            .ui.grid
+              .six.wide.column.removed
+                .ui.massive.label.left.floated
+                  i.small.sort.teal.icon.left.floated#home
+                img.ui.image.left.floated(ng-src='assets/images/nfl_logos/{{ player.team.toLowerCase() }}.png')
+                a.header(ng-click='showModal(player, $index)') {{ player.name }}
+                .description {{ player.position }} - {{ player.team }}
+              .four.wide.column
+                .top.label-tags
+                  .ui.green.tag.tiny.label(ng-class='{inactive: !player.tag.sleeper}' ng-click='handleTagClick("sleeper", player.tag, $event)')
+                    i.heartbeat.icon
+                    | Sleeper
+                  .ui.yellow.tag.tiny.label(ng-class='{inactive: !player.tag.bust}' ng-click='handleTagClick("bust", player.tag, $event)')
+                    i.warning.sign.icon
+                    | Bust
+                .bottom.label-tags
+                  .ui.red.tag.tiny.label(ng-class='{inactive: !player.tag.injury}' ng-click='handleTagClick("injury", player.tag, $event)')
+                    i.hospital.icon
+                    | Injury Prone
+                  .ui.blue.tag.tiny.label(ng-class='{inactive: !player.tag.notes}')
+                    i.write.icon
+                    | Notes
+                  .ui.popup
+                    .header Notes
+                    .ui.transparent.left.icon.input
+                      input(type='text' placeholder='Add notes...' ng-model='player.tag.notes' ng-blur='saveTag(player.tag)')
+                      i.write.icon
+              .six.wide.column
+                .six.wide.right.floated.right.aligned.column.removed
+                  .ui.tiny.statistic
+                    .value {{ player.points + (player.receptions * ppr) | number: 2 }}
+                    .label 2014 Points
+                .ten.wide.right.aligned.column
+                  .top.label-tags
+                    .ui.tiny.label.right.floated.removed \#{{ player.posRank }}
+                      .detail.pos-rank {{ player.position }}
+                    .ui.red.circular.mini.label.right.floated(ng-class='{inactive: !player.tag.removed}' ng-click='removePlayer(player, $index)')
+                      i.ban.icon
+                  .bottom.label-tags.removed
+                    .ui.tiny.label.right.floated(ng-show='player.age')
+                      .detail.age-tag Age
+                      | {{ player.age }}
+                    .ui.tiny.label.right.floated
+                      .detail.age-tag Bye
+                      | {{ byes[player.team] }}
+
+.ui.basic.large.modal#player-modal
+  i.close.icon
+  .ui.center.aligned.header
+    img(ng-src='assets/images/nfl_logos/{{ modalPlayer.team.toLowerCase() }}.png')
+    .content {{ modalPlayer.name }}
+      .sub.header
+        | {{ modalPlayer.position }} - {{ modalPlayer.team }} |
+        span(ng-show='modalPlayer.age')  {{ modalPlayer.age }} years old |
+        |  Bye: week {{ byes[modalPlayer.team] }}
+  .content
+    table.ui.inverted.table(ng-show='["QB", "RB", "WR", "TE"].indexOf(modalPlayer.position) != -1')
+      thead.centered
+        tr
+          th(colspan='6') Passing
+          th.border-left(colspan='4') Rushing
+          th.border-left(colspan='4') Receiving
+          th.border-left(rowspan='2') 2 Pt Conv
+          th.border-left(rowspan='2') Fum Rec TD
+          th.border-left(rowspan='2') Fum Lost
+        tr
+          th Comp-Att
+          th Comp %
+          th Yards
+          th YPA
+          th TDs
+          th Ints
+          th.border-left Att
+          th Yards
+          th YPC
+          th TDs
+          th.border-left Rec
+          th Yards
+          th YPR
+          th TDs
+      tbody
+        tr
+          td {{ modalPlayer.stats.passComp }} - {{ modalPlayer.stats.passAtt }}
+          td {{ evaluate(((modalPlayer.stats.passComp / modalPlayer.stats.passAtt) * 100)) }}
+          td {{ modalPlayer.stats.passYards }}
+          td {{ evaluate((modalPlayer.stats.passYards / modalPlayer.stats.passAtt)) }}
+          td {{ modalPlayer.stats.passTds }}
+          td {{ modalPlayer.stats.passInts }}
+          td.border-left {{ modalPlayer.stats.rushAtt }}
+          td {{ modalPlayer.stats.rushYards }}
+          td {{ evaluate((modalPlayer.stats.rushYards / modalPlayer.stats.rushAtt)) }}
+          td {{ modalPlayer.stats.rushTds }}
+          td.border-left {{ modalPlayer.stats.receptions }}
+          td {{ modalPlayer.stats.recYards }}
+          td {{ evaluate((modalPlayer.stats.recYards / modalPlayer.stats.receptions)) }}
+          td {{ modalPlayer.stats.recTds }}
+          td.border-left {{ modalPlayer.stats.twoPtConv }}
+          td.border-left {{ modalPlayer.stats.fumRecTd }}
+          td.border-left {{ modalPlayer.stats.fumLost }}
+    table.ui.inverted.table(ng-show='modalPlayer.position == "K"')
+      thead
+        tr
+          th(colspan='2') PAT
+          th(colspan='2') FG 0-19
+          th(colspan='2') FG 20-29
+          th(colspan='2') FG 30-39
+          th(colspan='2') FG 40-49
+          th(colspan='2') FG 50+
+        tr
+          th Made
+          th Miss
+          th Made
+          th Miss
+          th Made
+          th Miss
+          th Made
+          th Miss
+          th Made
+          th Miss
+          th Made
+          th Miss
+      tbody
+        tr
+          td {{ modalPlayer.stats.madePat }}
+          td {{ modalPlayer.stats.missPat }}
+          td {{ modalPlayer.stats.made019 }}
+          td {{ modalPlayer.stats.miss019 }}
+          td {{ modalPlayer.stats.made2029 }}
+          td {{ modalPlayer.stats.miss2029 }}
+          td {{ modalPlayer.stats.made3039 }}
+          td {{ modalPlayer.stats.miss3039 }}
+          td {{ modalPlayer.stats.made4049 }}
+          td {{ modalPlayer.stats.miss4049 }}
+          td {{ modalPlayer.stats.made50Plus }}
+          td {{ modalPlayer.stats.miss50Plus }}
+    table.ui.inverted.table(ng-show='modalPlayer.position == "DEF"')
+      thead
+        tr
+          th Sacks
+          th Int
+          th Fum Rec
+          th Safety
+          th Def TDs
+          th Return TDs
+          th Pts Allowed
+      tbody
+        tr
+          td {{ modalPlayer.stats.sacks }}
+          td {{ modalPlayer.stats.interceptions }}
+          td {{ modalPlayer.stats.fumRec }}
+          td {{ modalPlayer.stats.safeties }}
+          td {{ modalPlayer.stats.defTds }}
+          td {{ modalPlayer.stats.returnTds }}
+          td {{ modalPlayer.stats.ptsAllowed }}

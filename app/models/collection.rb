@@ -6,6 +6,10 @@ class Collection < ActiveRecord::Base
   belongs_to :user
   has_many   :sheets, dependent: :destroy
 
+  # Scopes
+  scope :defualt, -> { where(default: true) }
+  scope :user_id, -> user_id { where(user_id: user_id) }
+
   def deep_dup(options = {})
     dup.tap do |kopy|
       kopy.attributes = options

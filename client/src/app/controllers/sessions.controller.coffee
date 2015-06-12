@@ -8,7 +8,6 @@ angular.module 'draftPlanner'
       $auth.submitLogin($scope.loginForm).then(
         (resp) ->
           console.log 'login success'
-          console.log resp
           $state.go 'home'
         (resp) ->
           console.log 'login failed'
@@ -22,6 +21,5 @@ angular.module 'draftPlanner'
 
     $scope.$on 'auth:login-success', (evt) ->
       console.log 'signed in'
-      console.log evt
       $state.go 'home'
   ]
