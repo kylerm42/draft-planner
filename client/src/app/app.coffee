@@ -1,7 +1,7 @@
 angular.module 'draftPlanner', ['ng', 'ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize',
                                 'ngResource', 'ui.router', 'ng-token-auth', 'rails',
                                 'ng-sortable']
-  .config ($stateProvider, $urlRouterProvider, $rootScopeProvider) ->
+  .config ($stateProvider, $urlRouterProvider, $rootScopeProvider, $authProvider) ->
     $stateProvider
       .state 'home',
         url:          '/',
