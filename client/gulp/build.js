@@ -85,4 +85,6 @@ module.exports = function(options) {
   });
 
   gulp.task('build', ['html', 'fonts', 'other']);
+
+  gulp.task('heroku:production', ['build']);
 };

@@ -45,8 +45,8 @@
         .content.aligned
           .ui.grid
             .six.wide.column
-              .ui.massive.label.left.floated.sortable-handle
-                i.small.sort.teal.icon.left.floated#home
+              .ui.massive.teal.inverted.label.left.floated.sortable-handle
+                i.small.sort.icon.left.floated#home
               img.ui.image.left.floated(ng-src='assets/images/nfl_logos/{{ player.team.toLowerCase() }}.png')
               a.header(ng-click='showModal(player)') {{ player.name }}
               .description {{ player.position }} - {{ player.team }}
