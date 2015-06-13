@@ -5,8 +5,10 @@ angular.module 'draftPlanner'
       $state.go 'home'
 
     $scope.handleRegBtnClick = ->
+      $('.ui.dimmer').dimmer('show')
       $auth.submitRegistration $scope.registrationForm
         .then (resp) ->
+          $('.ui.dimmer').dimmer('hide')
           $state.go 'collections.new'
         .catch (resp) ->
           console.log 'registration failed'

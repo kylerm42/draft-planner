@@ -1,4 +1,6 @@
 form.ui.form(ng-submit='handleRegBtnClick()', role='form', ng-init='registrationForm = {}')
+  .ui.inverted.dimmer
+    .ui.loader
   .field
     label(for='email') Email
     input#email(type='text', name='email', ng-model='registrationForm.email', required)

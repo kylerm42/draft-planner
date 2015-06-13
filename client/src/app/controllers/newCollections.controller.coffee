@@ -7,8 +7,10 @@ angular.module "draftPlanner"
       ppr: 0
 
     $scope.handleCollectionCreation = () ->
+      $('.ui.segment .ui.dimmer').dimmer('show')
       $scope.collection.create().then(
         (collection) ->
+          $('.ui.segment .ui.dimmer').dimmer('hide')
           $rootScope.collections.push collection
           $state.go 'collections.show', id: collection.id
         (error) ->
