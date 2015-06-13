@@ -2,6 +2,9 @@ angular.module 'draftPlanner', ['ng', 'ngAnimate', 'ngCookies', 'ngTouch', 'ngSa
                                 'ngResource', 'ui.router', 'ng-token-auth', 'rails',
                                 'ng-sortable']
   .config ($stateProvider, $urlRouterProvider, $rootScopeProvider, $authProvider) ->
+
+    console.log "You must be special kind of person if you are looking in here. I like it. I'm Kyle, and I'm a web developer who is actually looking for a full time position at a company where I can build a long term career. I love Ruby, Rails and back end development, but front end development is growing on me as well. This site was built mainly with AngularJS accessing a Rails API. If you're interested in chatting with me, send me an email at \"kylerm 42 at gmail . com\".gsub(/at/, '@').delete(' ')"
+
     $stateProvider
       .state 'home',
         url:          '/',

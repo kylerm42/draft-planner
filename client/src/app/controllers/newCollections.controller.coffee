@@ -9,7 +9,6 @@ angular.module "draftPlanner"
     $scope.handleCollectionCreation = () ->
       $scope.collection.create().then(
         (collection) ->
-          console.log 'collection created'
           $rootScope.collections.push collection
           $state.go 'collections.show', id: collection.id
         (error) ->

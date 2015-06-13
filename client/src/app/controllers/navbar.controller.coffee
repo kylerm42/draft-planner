@@ -4,18 +4,14 @@ angular.module "draftPlanner"
     ($scope, $rootScope, $state, $auth, Collection) ->
 
       $rootScope.$on 'auth:logout-success', (evt) ->
-        console.log 'signed out'
-        console.log evt
         $state.go 'home'
 
       $rootScope.$on 'auth:validation-success', (evt) ->
-        console.log 'authentication successful'
         $rootScope.user = evt.targetScope.user
 
         getCollections($rootScope.user.id)
 
       $rootScope.$on 'auth:login-success', (evt) ->
-        console.log 'login successful'
         $rootScope.user = evt.targetScope.user
 
         getCollections($rootScope.user.id)

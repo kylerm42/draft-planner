@@ -68,7 +68,6 @@ angular.module "draftPlanner"
         sheet.update().then(
           (s) ->
             $('#save-button i').toggleClass('green blue checkmark asterisk loading')
-            console.log 'sheet saved'
           (error) ->
             handleError error, 'Error updating sheet'
         )
@@ -79,7 +78,6 @@ angular.module "draftPlanner"
         tag.save().then(
           (t) ->
             $('#save-button i').toggleClass('green blue checkmark asterisk loading')
-            console.log 'tag saved'
           (error) ->
             handleError error, 'Error saving tag'
         )
@@ -144,7 +142,6 @@ angular.module "draftPlanner"
 
         player.get().then(
           (p) ->
-            console.log 'player updated'
           (error) ->
             handleError error, 'Error fetching player'
         )
