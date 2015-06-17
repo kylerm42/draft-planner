@@ -10,8 +10,6 @@ angular.module "draftPlanner"
         { 'ARI': 4, 'ATL': 9, 'BAL': 11, 'BUF': 9, 'CAR': 12, 'CHI': 9, 'CIN': 4, 'CLE': 4, 'DAL': 11, 'DEN': 4, 'DET': 9,
         'GB':  9, 'HOU': 10, 'IND': 10, 'JAC': 11, 'KC':  6, 'MIA': 5, 'MIN': 10, 'NE':  10, 'NO':  6, 'NYG': 8, 'NYJ': 11,
         'OAK': 5, 'PHI': 7, 'PIT': 12, 'SD':  10, 'STL': 4, 'SF':  8, 'SEA': 4, 'TB':  7, 'TEN': 9, 'WAS': 10 }
-      $scope.removedPlayers = []
-      $scope.sortedPlayers = []
 
       $('#list .ui.dimmer').dimmer('show')
       $('#collection-edit').popup
@@ -61,10 +59,7 @@ angular.module "draftPlanner"
       # save sheets
       saveSheet = (evt) ->
         $('#save-button i').toggleClass('green blue checkmark asterisk loading')
-        sheet.ranks = $scope.sortedPlayers.map (player) ->
-          player.id
-        $scope.removedPlayers.forEach (player) ->
-          sheet.ranks.push player.id
+        sheet.ranks = $('.item[data-player-id]').map((idx, val) -> $(val).data('player-id')).toArray()
         sheet.update().then(
           (s) ->
             $('#save-button i').toggleClass('green blue checkmark asterisk loading')
@@ -108,7 +103,6 @@ angular.module "draftPlanner"
           chosenOne[0].tag = tag
 
         $scope.sortedPlayers = []
-        $scope.removedPlayers = []
         sheet.ranks.forEach (id) ->
           chosenOne = $.grep players, (player) ->
             if !player.tag
@@ -120,10 +114,7 @@ angular.module "draftPlanner"
           chosenOne = chosenOne[0]
           chosenOne.points = parseFloat(chosenOne.points)
 
-          if chosenOne.tag.removed
-            $scope.removedPlayers.push chosenOne
-          else
-            $scope.sortedPlayers.push chosenOne
+          $scope.sortedPlayers.push chosenOne
 
         $('#list .ui.dimmer').dimmer('hide')
 
@@ -152,18 +143,17 @@ angular.module "draftPlanner"
         else
           number.toFixed(1)
 
-      $scope.removePlayer = (player, idx) ->
-        if player.tag.removed
-          $scope.removedPlayers.splice(idx, 1)
-          $scope.sortedPlayers.push(player)
-          player.tag.removed = false
-        else
-          $scope.sortedPlayers.splice(idx, 1)
-          $scope.removedPlayers.push(player)
-          player.tag.removed = true
+      $scope.removePlayer = (playerId) ->
+        idx = sheet.ranks.indexOf(playerId)
+        console.log idx
+        sheet.ranks.splice(idx, 1)
 
-        saveTag(player.tag)
+        $('.item[data-player-id=' + playerId + ']').remove()
+
         saveSheet()
+
+      $scope.getRank = (playerId) ->
+        $('.item[data-player-id=' + playerId + ']').index() + 1
 
       # get collection
       Collection.get($stateParams.id).then(

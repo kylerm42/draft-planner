@@ -24,14 +24,14 @@
   #list
     .ui.inverted.dimmer
       .ui.text.loader Loading
-    .ui.divided.list(ng-sortable='rankSortable')
-      .item(ng-repeat='player in sortedPlayers')
+    .ui.divided.list#sortedList(ng-sortable='rankSortable')
+      .item(ng-repeat='player in ::sortedPlayers' data-player-id='{{ player.id }}')
         .content.aligned
           .ui.grid
             .six.wide.column
               .ui.massive.label.left.floated.sortable-handle
                 i.small.sort.teal.icon.left.floated
-                | {{ $index + 1 }}
+                | {{ getRank(player.id) }}
               img.ui.image.left.floated(ng-src='assets/images/nfl_logos/{{ player.team.toLowerCase() }}.png')
               a.header(ng-click='showModal(player, $index)') {{ player.name }}
               .description {{ player.position }} - {{ player.team }}
@@ -64,7 +64,7 @@
                 .top.label-tags
                   .ui.tiny.label.right.floated \#{{ player.posRank }}
                     .detail.pos-rank {{ player.position }}
-                  .ui.red.circular.mini.label.right.floated(ng-class='{inactive: !player.tag.removed}' ng-click='removePlayer(player, $index)')
+                  .ui.red.circular.mini.label.right.floated(ng-class='{inactive: !player.tag.removed}' ng-click='removePlayer(player.id)')
                     i.ban.icon
                 .bottom.label-tags
                   .ui.tiny.label.right.floated(ng-show='player.age')
@@ -73,61 +73,6 @@
                   .ui.tiny.label.right.floated
                     .detail.age-tag Bye
                     | {{ byes[player.team] }}
-
-    #removed-list(ng-show='removedPlayers.length > 0')
-      h4.ui.horizontal.header.divider
-        i.red.ban.icon
-        | Removed players
-
-      .ui.divided.list
-        .item(ng-repeat='player in removedPlayers')
-          .content.aligned
-            .ui.grid
-              .six.wide.column.removed
-                .ui.massive.label.left.floated
-                  i.small.sort.teal.icon.left.floated
-                  | {{ $index + 1 }}
-                img.ui.image.left.floated(ng-src='assets/images/nfl_logos/{{ player.team.toLowerCase() }}.png')
-                a.header(ng-click='showModal(player, $index)') {{ player.name }}
-                .description {{ player.position }} - {{ player.team }}
-              .four.wide.column
-                .top.label-tags
-                  .ui.green.tag.tiny.label(ng-class='{inactive: !player.tag.sleeper}' ng-click='handleTagClick("sleeper", player.tag, $event)')
-                    i.heartbeat.icon
-                    | Sleeper
-                  .ui.yellow.tag.tiny.label(ng-class='{inactive: !player.tag.bust}' ng-click='handleTagClick("bust", player.tag, $event)')
-                    i.warning.sign.icon
-                    | Bust
-                .bottom.label-tags
-                  .ui.red.tag.tiny.label(ng-class='{inactive: !player.tag.injury}' ng-click='handleTagClick("injury", player.tag, $event)')
-                    i.hospital.icon
-                    | Injury Prone
-                  .ui.blue.tag.tiny.label(ng-class='{inactive: !player.tag.notes}')
-                    i.write.icon
-                    | Notes
-                  .ui.popup
-                    .header Notes
-                    .ui.transparent.left.icon.input
-                      input(type='text' placeholder='Add notes...' ng-model='player.tag.notes' ng-blur='saveTag(player.tag)')
-                      i.write.icon
-              .six.wide.column
-                .six.wide.right.floated.right.aligned.column.removed
-                  .ui.tiny.statistic
-                    .value {{ player.points + (player.receptions * collection.ppr) | number: 2 }}
-                    .label 2014 Points
-                .ten.wide.right.aligned.column
-                  .top.label-tags
-                    .ui.tiny.label.right.floated.removed \#{{ player.posRank }}
-                      .detail.pos-rank {{ player.position }}
-                    .ui.red.circular.mini.label.right.floated(ng-class='{inactive: !player.tag.removed}' ng-click='removePlayer(player, $index)')
-                      i.ban.icon
-                  .bottom.label-tags.removed
-                    .ui.tiny.label.right.floated(ng-show='player.age')
-                      .detail.age-tag Age
-                      | {{ player.age }}
-                    .ui.tiny.label.right.floated
-                      .detail.age-tag Bye
-                      | {{ byes[player.team] }}
 
 #save-button
   i.circular.big.green.inverted.checkmark.icon
