@@ -12,7 +12,7 @@
       | My Rankings
       i.dropdown.icon
       .menu
-        a.item(ng-repeat='collection in collections' ng-href='#/collections/{{collection.id}}/') {{ collection.name }}
+        a.item(ng-repeat='collection in collections' ui-sref="collections.show.list({ id: collection.id, position: 'qb' })") {{ collection.name }}
         .divider
         a.item(href='#/collections/new')
           i.plus.icon

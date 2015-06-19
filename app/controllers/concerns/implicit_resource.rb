@@ -42,7 +42,7 @@ module Concerns
         @collection ||= if respond_to?(:policy_scope)
           policy_scope(apply_scopes(klass.all))
         else
-          apply_scope(klass.all)
+          apply_scopes(klass.all)
         end
       end
 

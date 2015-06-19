@@ -15,7 +15,7 @@ class ApplicationPolicy
   end
 
   def create?
-    user
+    authenticated?
   end
 
   def new?
@@ -23,7 +23,7 @@ class ApplicationPolicy
   end
 
   def update?
-    user
+    authenticated?
   end
 
   def edit?
@@ -31,7 +31,7 @@ class ApplicationPolicy
   end
 
   def destroy?
-    user
+    authenticated?
   end
 
   def scope
@@ -39,7 +39,7 @@ class ApplicationPolicy
   end
 
   def authenticated?
-    !!user
+    user
   end
 
   class Scope

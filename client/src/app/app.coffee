@@ -32,9 +32,23 @@ angular.module 'draftPlanner', ['ng', 'ngAnimate', 'ngCookies', 'ngTouch', 'ngSa
         templateUrl:  'app/views/collections/new.html',
         controller:   'NewCollectionsCtrl'
       .state 'collections.show',
-        url:          '/:id/:position',
+        abstract:     true
+        url:          '/:id',
         templateUrl:  'app/views/collections/show.html',
-        controller:   'ShowCollectionsCtrl'
+        controller:   'ShowCollectionsCtrl',
+        resolve:
+          collection: ['$stateParams', 'Collection', ($stateParams, Collection) ->
+            Collection.get($stateParams.id).then(
+              (col) ->
+                collection = col
+              (error) ->
+                $state.go 'home'
+            )
+          ]
+      .state 'collections.show.list',
+        url:          '/:position',
+        templateUrl:  'app/views/collections/list.html'
+        controller:   'ListCollectionsCtrl'
 
     $urlRouterProvider.otherwise '/'
 

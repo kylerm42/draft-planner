@@ -1,0 +1,68 @@
+.ui.divided.list#sortedList
+  .item(ng-repeat='player in sortedPlayers' data-player-id='{{ ::player.id }}')
+    .content.aligned
+      .ui.grid
+        .six.wide.column
+          .ui.massive.label.left.floated.sortable-handle
+            i.small.sort.teal.icon.left.floated
+            | {{ getRank(player.id) }}
+          img.ui.image.left.floated(ng-src='assets/images/nfl_logos/{{ player.team.toLowerCase() }}.png')
+          a.header(ng-click='showModal(player, $index)') {{ ::player.name }}
+          .description {{ ::player.position }} - {{ ::player.team }}
+        .four.wide.column
+          .top.label-tags
+            .ui.green.tag.tiny.label(ng-class='{inactive: !player.tag.sleeper}' ng-click='handleTagClick("sleeper", player.tag, $event)')
+              i.heartbeat.icon
+              | Sleeper
+            .ui.yellow.tag.tiny.label(ng-class='{inactive: !player.tag.bust}' ng-click='handleTagClick("bust", player.tag, $event)')
+              i.warning.sign.icon
+              | Bust
+          .bottom.label-tags
+            .ui.red.tag.tiny.label(ng-class='{inactive: !player.tag.injury}' ng-click='handleTagClick("injury", player.tag, $event)')
+              i.hospital.icon
+              | Injury Prone
+            .ui.blue.tag.tiny.label(ng-class='{inactive: !player.tag.notes}')
+              i.write.icon
+              | Notes
+            .ui.popup
+              .header Notes
+              .ui.transparent.left.icon.input
+                input(type='text' placeholder='Add notes...' ng-model='player.tag.notes' ng-blur='saveTag(player.tag)')
+                i.write.icon
+        .six.wide.column
+          .six.wide.right.floated.right.aligned.column
+            .ui.tiny.statistic
+              .value {{ player.points + (player.receptions * collection.ppr) | number: 2 }}
+              .label 2014 Points
+          .ten.wide.right.floated.right.aligned.column
+            .top.label-tags
+              .ui.tiny.label.right.floated \#{{ ::player.posRank }}
+                .detail.pos-rank {{ ::player.position }}
+              .ui.red.circular.mini.label.right.floated(ng-class='{inactive: !player.tag.removed}' ng-click='removePlayer(player)')
+                i.ban.icon
+            .bottom.label-tags
+              .ui.tiny.label.right.floated(ng-show='player.age')
+                .detail.age-tag Age
+                | {{ ::player.age }}
+              .ui.tiny.label.right.floated
+                .detail.age-tag Bye
+                | {{ ::byes[player.team] }}
+
+h4.ui.horizontal.divider.header
+  i.green.plus.icon
+  | Add a player
+
+.ui.grid
+  .thirteen.wide.column
+    .ui.upward.fluid.search.selection.disabled.dropdown#addDropdown
+      input#addInput(name='addPlayer' type='hidden')
+      i.dropdown.icon
+      .default.text Loading players...
+      .menu
+
+  .three.wide.column
+    .ui.fluid.teal.animated.fade.button#addButton(ng-click='addPlayer()')
+      .visible.content
+        i.plus.icon
+      .hidden.content
+        | Add Player

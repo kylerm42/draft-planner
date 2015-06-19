@@ -4,6 +4,9 @@ class Sheet < ActiveRecord::Base
   validates_uniqueness_of   :position, scope: :collection
   validate :ranked_players_match_sheet_position
 
+  # Callbacks
+  before_save :remove_rank_duplicates
+
   # Associations
   belongs_to :collection
   has_many   :tags
@@ -25,5 +28,9 @@ class Sheet < ActiveRecord::Base
       unless (ranks - Player.where(position: position).map(&:id)).empty?
         errors.add(:ranks, "must only contain #{position}s")
       end
+    end
+
+    def remove_rank_duplicates
+      self.ranks = ranks.uniq
     end
 end
