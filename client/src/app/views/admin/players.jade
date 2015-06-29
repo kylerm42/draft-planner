@@ -1,0 +1,162 @@
+h1.ui.centered.header {{ player.id ? 'Edit player' : 'Add a player' }}
+
+.ui.horizontal.divider
+  i.yellow.trophy.icon
+
+form.ui.form(role='form', ng-submit='handlePlayerSubmit()')
+  .ui.grid
+    .row
+      .sixteen.wide.column
+        .five.fields
+          .required.field
+            label(for='name') Name
+            input(type='text', name='name', ng-model='player.name' placeholder='Player name' required)
+          .required.field
+            label(for='position') Position
+            select.ui.dropdown#position-dropdown(name='position' ng-model='player.position')
+              option(value='') Position
+              option(value='QB') QB
+              option(value='RB') RB
+              option(value='WR') WR
+              option(value='TE') TE
+              option(value='K') K
+              option(value='DEF') DEF
+          .required.field
+            label(for='team') Team
+            select.ui.dropdown#team-dropdown(name='team' ng-model='player.team')
+              option(value='') Team
+              option(ng-repeat='team in teams' value='{{ team }}') {{ team }}
+          .required.field
+            label(for='birthdate') Birthdate
+            input(type='text' name='birthdate' ng-model='player.birthdate' placeholder='YYYY-MM-DD' required)
+          .field
+            label(for='points') Points
+            input(type='text' name='points' ng-model='player.points' step='0.01')
+
+    .row
+      .ten.wide.column
+        h4.ui.dividing.header Passing
+        .five.fields
+          .field
+            label(for='pass_comp') Completions
+            input(type='number' name='pass_comp' ng-model='player.stats.passComp')
+          .field
+            label(for='pass_att') Attempts
+            input(type='number' name='pass_att' ng-model='player.stats.passAtt')
+          .field
+            label(for='pass_yards') Yards
+            input(type='number' name='pass_yards' ng-model='player.stats.passYards' ng-change='updatePoints()')
+          .field
+            label(for='pass_tds') Touchdowns
+            input(type='number' name='pass_tds' ng-model='player.stats.passTds' ng-change='updatePoints()')
+          .field
+            label(for='pass_ints') Interceptions
+            input(type='number' name='pass_ints' ng-model='player.stats.passInts' ng-change='updatePoints()')
+      .six.wide.column
+        h4.ui.dividing.header Miscellaneous
+        .three.fields
+          .field
+            label(for='fum_lost') Fumbles Lost
+            input(type='number' name='fum_lost' ng-model='player.stats.fumLost' ng-change='updatePoints()')
+          .field
+            label(for='two_pt_conv') 2-Pt Conv
+            input(type='number' name='two_pt_conv' ng-model='player.stats.twoPtConv' ng-change='updatePoints()')
+          .field
+            label(for='fum_rec_td') Fum Rec TDs
+            input(type='number' name='fum_rec_td' ng-model='player.stats.fumRecTd' ng-change='updatePoints()')
+
+    .row
+      .eight.wide.column
+        h4.ui.dividing.header Rushing
+        .three.fields
+          .field
+            label(for='rush_att') Attempts
+            input(type='number' name='rush_att' ng-model='player.stats.rushAtt')
+          .field
+            label(for='rush_yards') Yards
+            input(type='number' name='rush_yards' ng-model='player.stats.rushYards' ng-change='updatePoints()')
+          .field
+            label(for='rush_tds') Touchdowns
+            input(type='number' name='rush_tds' ng-model='player.stats.rushTds' ng-change='updatePoints()')
+      .eight.wide.column
+        h4.ui.dividing.header Receiving
+        .three.fields
+          .field
+            label(for='receptions') Receptions
+            input(type='number' name='receptions' ng-model='player.stats.receptions')
+          .field
+            label(for='rec_yards') Yards
+            input(type='number' name='rec_yards' ng-model='player.stats.recYards' ng-change='updatePoints()')
+          .field
+            label(for='rec_tds') Touchdowns
+            input(type='number' name='rec_tds' ng-model='player.stats.recTds' ng-change='updatePoints()')
+
+    .row
+      .sixteen.wide.column
+        h4.ui.dividing.header Kicking
+        .six.fields
+          .field
+            label(for='made_pat') PAT
+            input(type='number' name='made_pat' placeholder='Made' ng-model='player.stats.madePat' ng-change='updatePoints()')
+          .field
+            label(for='made_under_20') 0-19
+            input(type='number' name='made_under_20' placeholder='Made' ng-model='player.stats.madeUnder20' ng-change='updatePoints()')
+          .field
+            label(for='made_20s') 20-29
+            input(type='number' name='made_20s' placeholder='Made' ng-model='player.stats.made20s' ng-change='updatePoints()')
+          .field
+            label(for='made_30s') 30-39
+            input(type='number' name='made_30s' placeholder='Made' ng-model='player.stats.made30s' ng-change='updatePoints()')
+          .field
+            label(for='made_40s') 40-49
+            input(type='number' name='made_40s' placeholder='Made' ng-model='player.stats.made40s' ng-change='updatePoints()')
+          .field
+            label(for='made_50_plus') 50+
+            input(type='number' name='made_50_plus' placeholder='Made' ng-model='player.stats.made50Plus' ng-change='updatePoints()')
+        .six.fields
+          .field
+            input(type='number' name='miss_pat' placeholder='Miss' ng-model='player.stats.missPat' ng-change='updatePoints()')
+          .field
+            input(type='number' name='miss_under_20' placeholder='Miss' ng-model='player.stats.missUnder20' ng-change='updatePoints()')
+          .field
+            input(type='number' name='miss_20s' placeholder='Miss' ng-model='player.stats.miss20s' ng-change='updatePoints()')
+          .field
+            input(type='number' name='miss_30s' placeholder='Miss' ng-model='player.stats.miss30s' ng-change='updatePoints()')
+          .field
+            input(type='number' name='miss_40s' placeholder='Miss' ng-model='player.stats.miss40s' ng-change='updatePoints()')
+          .field
+            input(type='number' name='miss_50_plus' placeholder='Miss' ng-model='player.stats.miss50Plus' ng-change='updatePoints()')
+
+    .row
+      .sixteen.wide.column
+        h4.ui.dividing.header Defense
+        .seven.fields
+          .field
+            label(for='sacks') Sacks
+            input(type='number' name='sacks' ng-model='player.stats.sacks' ng-change='updatePoints()')
+          .field
+            label(for='interceptions') Interceptions
+            input(type='number' name='interceptions' ng-model='player.stats.interceptions' ng-change='updatePoints()')
+          .field
+            label(for='fum_rec') Fum Rec
+            input(type='number' name='fum_rec' ng-model='player.stats.fumRec' ng-change='updatePoints()')
+          .field
+            label(for='safeties') Safeties
+            input(type='number' name='safeties' ng-model='player.stats.safeties' ng-change='updatePoints()')
+          .field
+            label(for='def_tds') Defensive TDs
+            input(type='number' name='def_tds' ng-model='player.stats.defTds' ng-change='updatePoints()')
+          .field
+            label(for='return_tds') Return TDs
+            input(type='number' name='return_tds' ng-model='player.stats.returnTds' ng-change='updatePoints()')
+          .field
+            label(for='pts_allowed') Pts Allowed
+            input(type='number' name='pts_allowed' ng-model='player.stats.ptsAllowed' ng-change='updatePoints()')
+
+    .row
+      .sixteen.wide.column
+        button.ui.fluid.purple.animated.fade.button
+          .visible.content
+            | {{ player.id ? 'Edit Player' : 'Add Player' }}
+          .hidden.content
+            i.check.icon

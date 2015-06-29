@@ -1,0 +1,108 @@
+.ui.basic.large.modal#player-modal
+  i.close.icon
+  .ui.center.aligned.header
+    img(ng-src='assets/images/nfl_logos/{{ modalPlayer.team.toLowerCase() }}.png')
+    .content {{ modalPlayer.name }}
+      .sub.header
+        | {{ modalPlayer.position }} - {{ modalPlayer.team }} |
+        span(ng-show='modalPlayer.age')  {{ modalPlayer.age }} years old |
+        |  Bye: week {{ byes[modalPlayer.team] }}
+  .content
+    table.ui.inverted.table(ng-show='["QB", "RB", "WR", "TE"].indexOf(modalPlayer.position) != -1')
+      thead.centered
+        tr
+          th(colspan='6') Passing
+          th.border-left(colspan='4') Rushing
+          th.border-left(colspan='4') Receiving
+          th.border-left(rowspan='2') 2 Pt Conv
+          th.border-left(rowspan='2') Fum Rec TD
+          th.border-left(rowspan='2') Fum Lost
+        tr
+          th Comp-Att
+          th Comp %
+          th Yards
+          th YPA
+          th TDs
+          th Ints
+          th.border-left Att
+          th Yards
+          th YPC
+          th TDs
+          th.border-left Rec
+          th Yards
+          th YPR
+          th TDs
+      tbody
+        tr
+          td {{ modalPlayer.stats.passComp }} - {{ modalPlayer.stats.passAtt }}
+          td {{ evaluate(((modalPlayer.stats.passComp / modalPlayer.stats.passAtt) * 100)) }}
+          td {{ modalPlayer.stats.passYards }}
+          td {{ evaluate((modalPlayer.stats.passYards / modalPlayer.stats.passAtt)) }}
+          td {{ modalPlayer.stats.passTds }}
+          td {{ modalPlayer.stats.passInts }}
+          td.border-left {{ modalPlayer.stats.rushAtt }}
+          td {{ modalPlayer.stats.rushYards }}
+          td {{ evaluate((modalPlayer.stats.rushYards / modalPlayer.stats.rushAtt)) }}
+          td {{ modalPlayer.stats.rushTds }}
+          td.border-left {{ modalPlayer.stats.receptions }}
+          td {{ modalPlayer.stats.recYards }}
+          td {{ evaluate((modalPlayer.stats.recYards / modalPlayer.stats.receptions)) }}
+          td {{ modalPlayer.stats.recTds }}
+          td.border-left {{ modalPlayer.stats.twoPtConv }}
+          td.border-left {{ modalPlayer.stats.fumRecTd }}
+          td.border-left {{ modalPlayer.stats.fumLost }}
+    table.ui.inverted.table(ng-show='modalPlayer.position == "K"')
+      thead
+        tr
+          th(colspan='2') PAT
+          th(colspan='2') FG 0-19
+          th(colspan='2') FG 20-29
+          th(colspan='2') FG 30-39
+          th(colspan='2') FG 40-49
+          th(colspan='2') FG 50+
+        tr
+          th Made
+          th Miss
+          th Made
+          th Miss
+          th Made
+          th Miss
+          th Made
+          th Miss
+          th Made
+          th Miss
+          th Made
+          th Miss
+      tbody
+        tr
+          td {{ modalPlayer.stats.madePat }}
+          td {{ modalPlayer.stats.missPat }}
+          td {{ modalPlayer.stats.made019 }}
+          td {{ modalPlayer.stats.miss019 }}
+          td {{ modalPlayer.stats.made2029 }}
+          td {{ modalPlayer.stats.miss2029 }}
+          td {{ modalPlayer.stats.made3039 }}
+          td {{ modalPlayer.stats.miss3039 }}
+          td {{ modalPlayer.stats.made4049 }}
+          td {{ modalPlayer.stats.miss4049 }}
+          td {{ modalPlayer.stats.made50Plus }}
+          td {{ modalPlayer.stats.miss50Plus }}
+    table.ui.inverted.table(ng-show='modalPlayer.position == "DEF"')
+      thead
+        tr
+          th Sacks
+          th Int
+          th Fum Rec
+          th Safety
+          th Def TDs
+          th Return TDs
+          th Pts Allowed
+      tbody
+        tr
+          td {{ modalPlayer.stats.sacks }}
+          td {{ modalPlayer.stats.interceptions }}
+          td {{ modalPlayer.stats.fumRec }}
+          td {{ modalPlayer.stats.safeties }}
+          td {{ modalPlayer.stats.defTds }}
+          td {{ modalPlayer.stats.returnTds }}
+          td {{ modalPlayer.stats.ptsAllowed }}

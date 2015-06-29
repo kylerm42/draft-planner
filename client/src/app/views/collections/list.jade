@@ -6,7 +6,7 @@
           .ui.massive.label.left.floated.sortable-handle
             i.small.sort.teal.icon.left.floated
             | {{ getRank(player.id) }}
-          img.ui.image.left.floated(ng-src='assets/images/nfl_logos/{{ player.team.toLowerCase() }}.png')
+          img.ui.image.left.floated.team-logo(ng-src='assets/images/nfl_logos/{{ ::player.team.toLowerCase() }}.png')
           a.header(ng-click='showModal(player, $index)') {{ ::player.name }}
           .description {{ ::player.position }} - {{ ::player.team }}
         .four.wide.column
@@ -38,7 +38,8 @@
             .top.label-tags
               .ui.tiny.label.right.floated \#{{ ::player.posRank }}
                 .detail.pos-rank {{ ::player.position }}
-              .ui.red.circular.mini.label.right.floated(ng-class='{inactive: !player.tag.removed}' ng-click='removePlayer(player)')
+              .ui.red.circular.mini.label.right.floated.inactive(ng-click='removePlayer(player)')
+                span Remove &nbsp;
                 i.ban.icon
             .bottom.label-tags
               .ui.tiny.label.right.floated(ng-show='player.age')
@@ -54,14 +55,14 @@ h4.ui.horizontal.divider.header
 
 .ui.grid
   .thirteen.wide.column
-    .ui.upward.fluid.search.selection.disabled.dropdown#addDropdown
-      input#addInput(name='addPlayer' type='hidden')
+    .ui.upward.fluid.search.selection.disabled.dropdown#unlisted-dropdown
+      input#unlisted-input(name='add_player' type='hidden')
       i.dropdown.icon
       .default.text Loading players...
       .menu
 
   .three.wide.column
-    .ui.fluid.teal.animated.fade.button#addButton(ng-click='addPlayer()')
+    .ui.fluid.teal.animated.fade.button#add-button(ng-click='addPlayer()')
       .visible.content
         i.plus.icon
       .hidden.content

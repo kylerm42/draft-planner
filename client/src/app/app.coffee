@@ -24,31 +24,45 @@ angular.module 'draftPlanner', ['ng', 'ngAnimate', 'ngCookies', 'ngTouch', 'ngSa
       .state 'collections',
         abstract:     true,
         url:          '/collections',
-        templateUrl:  'app/views/collections/collections.html',
+        templateUrl:  'app/views/collections/base.html',
         resolve:
           auth: ($auth) -> $auth.validateUser()
       .state 'collections.new',
         url:          '/new',
         templateUrl:  'app/views/collections/new.html',
-        controller:   'NewCollectionsCtrl'
+        controller:   'CollectionsNewCtrl'
       .state 'collections.show',
         abstract:     true
         url:          '/:id',
         templateUrl:  'app/views/collections/show.html',
-        controller:   'ShowCollectionsCtrl',
+        controller:   'CollectionsShowCtrl',
         resolve:
           collection: ['$stateParams', 'Collection', ($stateParams, Collection) ->
             Collection.get($stateParams.id).then(
               (col) ->
                 collection = col
-              (error) ->
-                $state.go 'home'
             )
           ]
       .state 'collections.show.list',
         url:          '/:position',
         templateUrl:  'app/views/collections/list.html'
-        controller:   'ListCollectionsCtrl'
+        controller:   'CollectionsListCtrl'
+      .state 'admin',
+        abstract:     true,
+        url:          '/admin',
+        templateUrl:  'app/views/admin/base.html',
+        controller:   'AdminCtrl',
+        resolve:
+          auth: ($auth) ->
+            $auth.validateUser().then (u) ->
+      .state 'admin.dashboard',
+        url:          '/dashboard',
+        templateUrl:  'app/views/admin/dashboard.html'
+        controller:   'AdminDashboardCtrl'
+      .state 'admin.players',
+        url:          '/players/:id',
+        templateUrl:  'app/views/admin/players.html',
+        controller:   'AdminPlayersCtrl'
 
     $urlRouterProvider.otherwise '/'
 

@@ -7,5 +7,10 @@ Rails.application.routes.draw do
       resources :tags,        only: [:index, :create, :update]
     end
     resources :tags,          only: :show
+
+    scope 'admin' do
+      get '/stats', to: 'admin#stats'
+      resources :players,     only: [:create, :update]
+    end
   end
 end

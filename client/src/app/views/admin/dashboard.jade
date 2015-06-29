@@ -1,0 +1,117 @@
+h1.ui.centered.header Admin Panel
+
+.ui.horizontal.divider
+  i.yellow.trophy.icon
+
+.ui.grid
+  .eight.wide.column
+    h3.ui.centered.header
+      i.users.icon
+      | Users
+    .ui.center.aligned.grid
+      .three.column.row
+        .column
+          .ui.green.statistic
+            .value {{ users.count }}
+            .label Total Registered
+        .column
+          .ui.green.statistic
+            .value {{ users.recentRegistered }}
+            .label Recently Registered
+        .column
+          .ui.green.statistic
+            .value {{ users.recentSignIn }}
+            .label Recently Signed In
+
+  .eight.wide.column
+    h3.ui.centered.header
+      i.tags.icon
+      | Tags
+    .ui.center.aligned.grid
+      .three.column.row
+        .column
+          .ui.blue.statistic
+            .value {{ tags.count }}
+            .label Total Count
+        .column
+          .ui.blue.statistic
+            .value {{ tags.recentUpdated }}
+            .label Recently Updated
+        .column
+          .ui.blue.statistic
+            .value {{ tags.recentCreated }}
+            .label Recently Created
+
+  .eight.wide.column
+    h3.ui.centered.header
+      i.list.layout.icon
+      | Collections
+    .ui.center.aligned.grid
+      .three.column.row
+        .column
+          .ui.purple.statistic
+            .value {{ collections.count }}
+            .label Total Count
+        .column
+          .ui.purple.statistic
+            .value {{ collections.recentUpdated }}
+            .label Recently Updated
+        .column
+          .ui.purple.statistic
+            .value {{ collections.recentCreated }}
+            .label Recently Created
+      .row
+        .column
+          .2.fluid.ui.buttons
+            a.ui.purple.animated.fade.button
+              .visible.content
+                i.edit.icon
+              .hidden.content
+                i.edit.icon
+                | Edit Collection
+            a.ui.purple.animated.fade.button
+              .visible.content
+                i.plus.icon
+              .hidden.content
+                i.plus.icon
+                | Add Collection
+
+  .eight.wide.column
+    h3.ui.centered.header
+      i.male.icon
+      | Players
+    .ui.center.aligned.grid
+      .three.column.row
+        .column
+          .ui.teal.statistic
+            .value {{ players.count }}
+            .label Total Count
+        .column
+          .ui.teal.statistic
+            .value {{ players.recentUpdated }}
+            .label Recently Updated
+        .column
+          .ui.teal.statistic
+            .value {{ players.recentCreated }}
+            .label Recently Created
+      .row
+        .column
+          .2.fluid.ui.teal.buttons
+            .ui.animated.fade.button#edit-player-btn(ng-click='showPlayerDropdown()')
+              .visible.content
+                i.edit.icon
+              .hidden.content
+                i.edit.icon
+                | Edit Player
+            a.ui.animated.fade.button(href='#/admin/players/new')
+              .visible.content
+                i.plus.icon
+              .hidden.content
+                i.plus.icon
+                | Add Player
+      .row.hide#edit-player-row
+        .column
+          .ui.upward.fluid.search.selection.disabled.dropdown#edit-player-dropdown
+            i.dropdown.icon
+            .default.text Loading players...
+            .menu

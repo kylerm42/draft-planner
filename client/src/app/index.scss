@@ -1,15 +1,45 @@
-.ui.icon.header > .content.ui.header {
-  margin-top: 0;
+body {
+  background-color: #dddddd
 }
 
 // navbar
-.ui.inverted.menu {
-  margin-top: 1rem;
-  margin-bottom: 2rem;
+#navbar {
+  width: 100%;
+  position: fixed;
+  top: 0;
+  border-radius: 0;
+  -webkit-box-shadow: 0px -5px 10px 5px rgba(0,0,0,0.75);
+  -moz-box-shadow: 0px -5px 10px 5px rgba(0,0,0,0.75);
+  box-shadow: 0px -5px 10px 5px rgba(0,0,0,0.75);
+  z-index: 9999;
+
+  > .item:first-child {
+    border-radius: 0;
+  }
+
+  #home-logo a {
+    color: #ffffff;
+  }
+
+  #logo-icon {
+    position: absolute;
+    left: 50%;
+    width: 24px;
+    margin-left: -24px;
+  }
 }
 
-.ui.menu span a {
-  color: #ffffff;
+#main-segment {
+  min-height: 250px;
+  margin-top: 5rem;
+}
+
+#main-segment.loading::after {
+  top: 150px;
+}
+
+.ui.icon.header > .content.ui.header {
+  margin-top: 0;
 }
 
 // beta tag
@@ -41,86 +71,72 @@ sup#beta-tag {
 }
 
 // collections
-#list {
+#sortedList {
   min-height: 8em;
 
-  .ui.loader {
-    top: 4em;
+  // team logo
+  img.ui.image.left.floated {
+    height: 3em;
+    width: 3em;
+  }
+  // player name
+  a.header {
+    margin-top: 0.4em;
+  }
+  // user rank label
+  .ui.massive.label {
+    margin-right: 0.5em;
+    padding: 0.6em 0.4em;
+    cursor: move;
+
+    i.icon {
+      margin: 0.1em 0.3em 0 0;
+    }
+
+    i.icon#home {
+      margin: 0.1em 0 0 0
+    }
+  }
+  // position rank label
+  .ui.tiny.label {
+    .detail.pos-rank {
+      margin-left: 0.5em;
+    }
+  }
+  // list item labels
+  .top.label-tags {
+    display: inline-block;
+
+    .ui.tag.label {
+      margin-bottom: 0.3em;
+    }
   }
 
-  .ui.divided.list {
-    // removed player
-    .removed {
-      opacity: .3;
+  .label-tags {
+    .ui.tag.label {
+      padding-right: 1em;
+      padding-left: 1em;
+      cursor: pointer;
+    }
 
-      .ui.massive.label {
-        cursor: not-allowed;
-      }
-    }
-    // team logo
-    img.ui.image.left.floated {
-      height: 3em;
-      width: 3em;
-    }
-    // player name
-    a.header {
-      margin-top: 0.4em;
-    }
-    // user rank label
-    .ui.massive.label {
+    .detail.age-tag {
+      margin-left: 0;
       margin-right: 0.5em;
-      padding: 0.6em 0.4em;
-      cursor: move;
+    }
+
+    .ui.circular.label {
+      cursor: pointer;
 
       i.icon {
-        margin: 0.1em 0.3em 0 0;
-      }
-
-      i.icon#home {
-        margin: 0.1em 0 0 0
-      }
-    }
-    // position rank label
-    .ui.tiny.label {
-      .detail.pos-rank {
-        margin-left: 0.5em;
-      }
-    }
-    // list item labels
-    .top.label-tags {
-      display: inline-block;
-
-      .ui.tag.label {
-        margin-bottom: 0.3em;
+        margin-right: 0;
       }
     }
 
-    .label-tags {
-      .ui.tag.label {
-        padding-right: 1em;
-        padding-left: 1em;
-        cursor: pointer;
-      }
+    .ui.label.inactive {
+      opacity: 0.3;
 
-      .detail.age-tag {
-        margin-left: 0;
-        margin-right: 0.5em;
-      }
-
-      .ui.circular.label {
-        cursor: pointer;
-
-        i.icon {
-          margin-right: 0;
-        }
-      }
-
-      .ui.label.inactive {
-        opacity: 0.3;
-
-        &:hover {
-          opacity: 0.8;
-        }
+      &:hover {
+        opacity: 0.8;
       }
     }
   }
@@ -151,6 +167,16 @@ sup#beta-tag {
   position: fixed;
   bottom: 1em;
   right: 1em;
+  i {
+    cursor: default;
+    -webkit-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.35);
+    -moz-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.35);
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.35);
+  }
+}
+
+.hide {
+  display: none !important
 }
 /* Do not remove this comments bellow. It's the markers used by gulp-inject to inject
    all your sass files automatically */

@@ -1,13 +1,15 @@
 angular.module 'draftPlanner'
-  .controller 'HomeCtrl', ['$scope', 'loaders', 'Player', 'Sheet', 'Tag',
-    ($scope, loaders, Player, Sheet, Tag) ->
+  .controller 'CollectionsListCtrl',
+    ['$scope', '$stateParams', 'loaders', 'Player', 'Tag', 'collection',
+    ($scope, $stateParams, loaders, Player, Tag, collection) ->
 
-      $scope.ppr = 0
-      $scope.byes = {
-        'ARI': 4, 'ATL': 9, 'BAL': 11, 'BUF': 9, 'CAR': 12, 'CHI': 9, 'CIN': 4, 'CLE': 4, 'DAL': 11, 'DEN': 4, 'DET': 9,
-        'GB':  9, 'HOU': 10, 'IND': 10, 'JAC': 11, 'KC':  6, 'MIA': 5, 'MIN': 10, 'NE':  10, 'NO':  6, 'NYG': 8, 'NYJ': 11,
-        'OAK': 5, 'PHI': 7, 'PIT': 12, 'SD':  10, 'STL': 4, 'SF':  8, 'SEA': 4, 'TB':  7, 'TEN': 9, 'WAS': 10
-      }
+      # define base variables for the page
+      defaultPositions = ['QB', 'RB', 'WR', 'TE', 'K', 'DEF']
+
+      if defaultPositions.indexOf($stateParams.position.toUpperCase()) != -1
+        position = $stateParams.position.toUpperCase()
+      else
+        position = 'QB'
 
       sheet = null
       players = []
@@ -15,12 +17,11 @@ angular.module 'draftPlanner'
       tags = []
 
       setBaseValues = () ->
-        Sheet.get({ id: 2 }).then (s) ->
-          sheet = s
-          players = sheet.players
-          tags = sheet.tags
-          sortPlayers()
-          getUnlistedPlayers()
+        sheet = $.grep collection.sheets, (sht) ->
+          sht.position == position
+        sheet = sheet[0]
+        players = sheet.players
+        tags = sheet.tags
 
       assignTags = () ->
         $.each tags, (idx, tag) ->
@@ -31,7 +32,7 @@ angular.module 'draftPlanner'
 
       sortPlayers = () ->
         $scope.sortedPlayers = []
-        sheet.ranks.slice(0, 40).forEach (id) ->
+        sheet.ranks.forEach (id) ->
           chosenOne = $.grep players, (player) ->
             if !player.tag
               player.tag = new Tag({
@@ -69,27 +70,58 @@ angular.module 'draftPlanner'
             loaders.handleError error, 'Error loading players to add'
         )
 
+      addPlayertoList = (player) ->
+        console.log player
+        $playerRow = $('#sortedList .item').last().clone()
+        $playerRow.attr('data-player-id', player.id)
+        console.log $playerRow.find('.team-logo').removeAttr('ng-src').attr('src',
+          "assets/images/nfl_logos/#{player.team.toLowerCase()}.png")
+
+
       addPlayerToDropdown = (player) ->
         $playerOption = $("<div class='item' data-value='#{player.name}' data-player-id='#{player.id}'>" +
           "<span class='right floated description'>#{player.position} - #{player.team}</span>#{player.name}</div>")
 
         $('#unlisted-dropdown .menu').append $playerOption
 
+      # save sheets
+      saveSheet = (evt) ->
+        loaders.fabLoading()
+        sheet.ranks = $('#sortedList .item[data-player-id]').map((idx, val) -> $(val).data('player-id')).toArray()
+        sheet.update().then(
+          (s) ->
+            loaders.fabSuccess()
+          (error) ->
+            loaders.handleError error, 'Error updating sheet'
+        )
+
+      # handle tag saving/updating
+      saveTag = (tag) ->
+        loaders.fabLoading()
+        tag.save().then(
+          (t) ->
+            loaders.fabSuccess()
+          (error) ->
+            loaders.handleError error, 'Error saving tag'
+        )
+
+      $scope.saveTag = (tag) -> saveTag(tag)
+
       $scope.handleTagClick = (tagName, tag, $event) ->
         tag[tagName] = !tag[tagName]
+        saveTag(tag)
 
       $scope.getRank = (playerId) ->
         $('.item[data-player-id=' + playerId + ']').index() + 1
 
       $scope.removePlayer = (player) ->
-        console.log $scope.sortedPlayers
         idx = $scope.sortedPlayers.indexOf(player)
-        $scope.sortedPlayers.splice(idx, 1)
-        console.log idx
-        console.log $scope.sortedPlayers
-        #$("#sortedList .item[data-player-id='#{player.id}']").remove()
-        addPlayerToDropdown(player)
+        $("#sortedList .item[data-player-id='#{player.id}']").remove()
         unlistedPlayers.push player
+
+        addPlayerToDropdown(player)
+
+        setTimeout saveSheet, 50
 
       $scope.addPlayer = () ->
         return unless $('#unlisted-input').val().length > 0
@@ -101,8 +133,7 @@ angular.module 'draftPlanner'
 
         idx = unlistedPlayers.indexOf(player)
         unlistedPlayers.splice(idx, 1)
-        $scope.sortedPlayers.push(player)
-        players.push player
+        addPlayertoList(player)
 
         $('#unlisted-dropdown').dropdown('clear')
         $("#unlisted-dropdown .item[data-player-id='#{player.id}']").remove()
@@ -113,10 +144,13 @@ angular.module 'draftPlanner'
               on: 'click'
               inline: true
               transition: 'fade up'
+            saveSheet()
           50
         )
 
       setBaseValues()
+      sortPlayers()
+      getUnlistedPlayers()
 
       setTimeout(
         () ->
@@ -138,5 +172,6 @@ angular.module 'draftPlanner'
         handle: '.sortable-handle'
         draggable: '.item'
         filter: '.removed'
+        onSort: saveSheet
       }
-  ]
+    ]

@@ -2,11 +2,11 @@ h1.ui.dividing.header.centered Create a rankings set
 form.ui.form(role='form', ng-submit='handleCollectionCreation()')
   .ui.inverted.dimmer
     .ui.loader
-  .field
+  .required.field
     label(for='collection_name') Name your rankings
     input(type='text', name='collection_name', ng-model='collection.name' placeholder='League name, scoring settings, etc.' required)
   .fields
-    .ten.wide.field
+    .ten.wide.required.field
       label(for='collection_dup_id') Choose a base set of ranks
       select.ui.dropdown(ng-model='collection.dup_id', name='collection_dup_id' required)
         option(value='') FantasyPros, ESPN, Matthew Berry, etc.
@@ -15,4 +15,7 @@ form.ui.form(role='form', ng-submit='handleCollectionCreation()')
       label(for='collection_ppr') PPR
       input(type='number' name='collection_ppr' ng-model='collection.ppr' step='0.1')
 
-  button.ui.submit.button Create
+  button.ui.fluid.teal.animated.fade.button
+    .visible.content Create
+    .hidden.content
+      i.plus.icon

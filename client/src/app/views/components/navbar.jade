@@ -1,21 +1,24 @@
-.ui.large.purple.inverted.menu(ng-controller='NavbarCtrl')
+.ui.large.purple.inverted.borderless.menu#navbar(ng-controller='NavbarCtrl')
   .header.item
-    i.trophy.icon
-    span
+    span#home-logo
       a(href='#/') Draft Planner
+  .item#logo-icon
+    i.trophy.icon
   .right.menu
-    .item(ng-show='!user.id')
-      a.ui.button(href='#/sign_in') Sign in
-    .item(ng-show='!user.id')
-      a.ui.teal.button(href='#/sign_up') Sign up
-    .ui.dropdown.item(ng-show='user.id')
-      | My Rankings
-      i.dropdown.icon
-      .menu
-        a.item(ng-repeat='collection in collections' ui-sref="collections.show.list({ id: collection.id, position: 'qb' })") {{ collection.name }}
-        .divider
-        a.item(href='#/collections/new')
-          i.plus.icon
-          | Create new set
-    .item(ng-show='user.id')
-      a.ui.teal.button(ng-click='signOut()') Sign out
+    div(ng-show='!user.id')
+      .item
+        a.ui.button(href='#/sign_in') Sign in
+      .item
+        a.ui.teal.button(href='#/sign_up') Sign up
+    div(ng-show='user.id')
+      .right.item
+        a.ui.teal.button(ng-click='handleSignOut()') Sign out
+      .ui.right.dropdown.item
+        | My Rankings
+        i.dropdown.icon
+        .menu
+          a.item(ng-repeat='collection in collections' ui-sref="collections.show.list({ id: collection.id, position: 'qb' })") {{ collection.name }}
+          .divider
+          a.item(href='#/collections/new')
+            i.plus.icon
+            | Create new set

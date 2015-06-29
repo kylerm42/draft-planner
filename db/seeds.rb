@@ -30,12 +30,7 @@ User.create(email: 'test3@example.com', password: 'test123', provider: 'email')
 
 # set player ranks
 ['QB', 'RB', 'WR', 'TE', 'DEF', 'K'].each do |position|
-  Player.transaction do
-    players = Player.where(position: position).order(points: :desc)
-    players.each_with_index do |player, idx|
-      player.update(pos_rank: idx + 1)
-    end
-  end
+  Player.set_position_ranks(position)
 end
 
 test_collection = user.collections.create(name: 'All Rankings', default: false)

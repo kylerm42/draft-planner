@@ -25,16 +25,16 @@ class CreatePlayers < ActiveRecord::Migration
 
       t.integer   :made_pat,      default: 0
       t.integer   :miss_pat,      default: 0
-      t.integer   :made_0_19,     default: 0
-      t.integer   :miss_0_19,     default: 0
-      t.integer   :made_20_29,    default: 0
-      t.integer   :miss_20_29,    default: 0
-      t.integer   :made_30_39,    default: 0
-      t.integer   :miss_30_39,    default: 0
-      t.integer   :made_40_49,    default: 0
-      t.integer   :miss_40_49,    default: 0
-      t.integer   :made_50_plus,  default: 0
-      t.integer   :miss_50_plus,  default: 0
+      t.integer   :made_under20, default: 0
+      t.integer   :miss_under20, default: 0
+      t.integer   :made20s,      default: 0
+      t.integer   :miss20s,      default: 0
+      t.integer   :made30s,      default: 0
+      t.integer   :miss30s,      default: 0
+      t.integer   :made40s,      default: 0
+      t.integer   :miss40s,      default: 0
+      t.integer   :made50_plus,  default: 0
+      t.integer   :miss50_plus,  default: 0
 
       t.integer   :sacks,         default: 0
       t.integer   :interceptions, default: 0

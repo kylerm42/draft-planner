@@ -52,16 +52,16 @@ ActiveRecord::Schema.define(version: 20150606135241) do
     t.integer  "fum_rec_td",                            default: 0
     t.integer  "made_pat",                              default: 0
     t.integer  "miss_pat",                              default: 0
-    t.integer  "made_0_19",                             default: 0
-    t.integer  "miss_0_19",                             default: 0
-    t.integer  "made_20_29",                            default: 0
-    t.integer  "miss_20_29",                            default: 0
-    t.integer  "made_30_39",                            default: 0
-    t.integer  "miss_30_39",                            default: 0
-    t.integer  "made_40_49",                            default: 0
-    t.integer  "miss_40_49",                            default: 0
-    t.integer  "made_50_plus",                          default: 0
-    t.integer  "miss_50_plus",                          default: 0
+    t.integer  "made_under20",                          default: 0
+    t.integer  "miss_under20",                          default: 0
+    t.integer  "made20s",                               default: 0
+    t.integer  "miss20s",                               default: 0
+    t.integer  "made30s",                               default: 0
+    t.integer  "miss30s",                               default: 0
+    t.integer  "made40s",                               default: 0
+    t.integer  "miss40s",                               default: 0
+    t.integer  "made50_plus",                           default: 0
+    t.integer  "miss50_plus",                           default: 0
     t.integer  "sacks",                                 default: 0
     t.integer  "interceptions",                         default: 0
     t.integer  "fum_rec",                               default: 0
@@ -122,6 +122,8 @@ ActiveRecord::Schema.define(version: 20150606135241) do
     t.datetime "updated_at"
   end
 
+  add_index "users", ["created_at"], name: "index_users_on_created_at", using: :btree
+  add_index "users", ["current_sign_in_at"], name: "index_users_on_current_sign_in_at", using: :btree
   add_index "users", ["email"], name: "index_users_on_email", using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   add_index "users", ["uid", "provider"], name: "index_users_on_uid_and_provider", unique: true, using: :btree

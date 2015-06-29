@@ -1,15 +1,18 @@
 angular.module 'draftPlanner'
-  .controller 'UsersCtrl', ['$scope', '$auth', '$state', ($scope, $auth, $state) ->
+  .controller 'UsersCtrl', ['$scope', '$auth', '$state', 'loaders',
+    ($scope, $auth, $state, loaders) ->
 
-    $scope.$on 'auth:login-success', (evt, user) ->
-      $state.go 'home'
+      $scope.handleRegBtnClick = ->
+        loaders.fabLoading()
+        $auth.submitRegistration $scope.registrationForm
+          .then (resp) ->
+            $('.ui.dimmer').dimmer('hide')
+            $state.go 'collections.new'
+          .catch (resp) ->
+            console.log 'registration failed'
 
-    $scope.handleRegBtnClick = ->
-      $('.ui.dimmer').dimmer('show')
-      $auth.submitRegistration $scope.registrationForm
-        .then (resp) ->
-          $('.ui.dimmer').dimmer('hide')
-          $state.go 'collections.new'
-        .catch (resp) ->
-          console.log 'registration failed'
+      $scope.$on 'auth:login-success', (evt, user) ->
+        $state.go 'home'
+
+      loaders.pageLoaded()
   ]
