@@ -1,6 +1,6 @@
 class CollectionPolicy < ApplicationPolicy
   def show?
-    owned?
+    true#owned?
   end
 
   def index?

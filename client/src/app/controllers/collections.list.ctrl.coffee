@@ -76,7 +76,7 @@ angular.module 'draftPlanner'
         $playerRow.attr('data-player-id', player.id)
         console.log $playerRow.find('.team-logo').removeAttr('ng-src').attr('src',
           "assets/images/nfl_logos/#{player.team.toLowerCase()}.png")
-
+        console.log $playerRow.find('.name').text(player.name)
 
       addPlayerToDropdown = (player) ->
         $playerOption = $("<div class='item' data-value='#{player.name}' data-player-id='#{player.id}'>" +

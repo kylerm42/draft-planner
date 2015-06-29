@@ -7,7 +7,7 @@
             i.small.sort.teal.icon.left.floated
             | {{ getRank(player.id) }}
           img.ui.image.left.floated.team-logo(ng-src='assets/images/nfl_logos/{{ ::player.team.toLowerCase() }}.png')
-          a.header(ng-click='showModal(player, $index)') {{ ::player.name }}
+          a.header.name(ng-click='showModal(player, $index)') {{ ::player.name }}
           .description {{ ::player.position }} - {{ ::player.team }}
         .four.wide.column
           .top.label-tags
